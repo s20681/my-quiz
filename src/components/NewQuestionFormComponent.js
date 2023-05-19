@@ -1,31 +1,31 @@
-import React, { Component } from 'react';
+function NewQuestionForm() {
 
-class NewQuestionForm extends Component {
-
-  handleSubmit = (e) => {
-    e.preventDefault();
-    const formData = {
-      question: this.state.question,
-      answerA: this.state.answerA,
-      answerB: this.state.answerB,
-      answerC: this.state.answerC,
-      answerD: this.state.answerD,
-      correctAnswer: this.state.correctAnswer,
-    };
+  // const handleSubmit = (e) => {
+  //   e.preventDefault();
+  //   const formData = {
+  //     question: this.state.question,
+  //     answerA: this.state.answerA,
+  //     answerB: this.state.answerB,
+  //     answerC: this.state.answerC,
+  //     answerD: this.state.answerD,
+  //     correctAnswer: this.state.correctAnswer,
+  //   };
     
-    fetch('http://127.0.0.1:8080/in', {  // Enter your IP address here
+  //       // mode: 'cors', 
+  //   // headers: { 'Content-Type': 'application/json' },
+  //   // headers: { 'Content-Type': 'Question' },
+  //   fetch('http://127.0.0.1:8080/in', {  // Enter your IP address here
 
-    method: 'POST', 
-    mode: 'cors', 
-    body: JSON.stringify(formData) // body data type must match "Content-Type" header
+  //   method: 'POST', 
+  //   headers: { 'Content-Type': 'application/json' },
+  //   body: JSON.stringify(formData) // body data type must match "Content-Type" header
 
-  })
-    console.log(formData)
-  };
+  // })
+  //   console.log(formData)
+  // };
 
-  render() {
     return (
-      <form id="myForm" onSubmit={this.handleSubmit}>
+      <form id="myForm">
           <div>
               <textarea id="question" name="question" placeholder="Write the question here..." 
               onChange={(e) => this.setState({ question: e.target.value })}></textarea>
@@ -49,7 +49,6 @@ class NewQuestionForm extends Component {
           </div>
       </form>
     );
-  }
 }
 
 export default NewQuestionForm;
