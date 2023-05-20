@@ -1,23 +1,24 @@
-import { BrowserRouter, Route, NavLink, useNavigate } from 'react-router-dom'
-import { useState } from 'react';
+import { useNavigate } from 'react-router-dom'
+import React, { ChangeEvent, useState } from 'react';
 
-function LoginComponent() {
+const LoginComponent: React.FC = () => {
     const [formData, setFormData] = useState({
         login: '',
         password: ''
     });
 
-    const HandleChange = (e) => {
-        setFormData((prevData) => ({
-            ...prevData,
-            [e.target.name]: e.target.value,
+    const HandleChange = (event: ChangeEvent<HTMLInputElement>): void => {
+        const { name, value } = event.target;
+        setFormData(prevState => ({
+          ...prevState,
+          [name]: value,
         }));
-    };
+      };
 
-    const HandleSubmit = event => {
+    const HandleSubmit = (event: React.SyntheticEvent<HTMLFormElement>) => {
         const navigate = useNavigate();
 
-        if (event.formData.login === 'admin')
+        if (formData.login === 'admin')
             navigate('/admin');
         else
             navigate('/')
