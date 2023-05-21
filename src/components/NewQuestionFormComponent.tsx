@@ -31,14 +31,14 @@ const NewQuestionForm: React.FC = () => {
         event.preventDefault();
         console.log('Form submitted:', formState);
         const formData = {
-            quiz: "QUIZ ID HERE", //TODO: add quiz id here,
-            type: "choice",
+            quizID: 1, //TODO: add quiz id here,
+            type: "SINGLE_CHOICE",
             content: formState.question,
             answers : [            
-                {content: formState.answerA},
-                {content: formState.answerB},
-                {content: formState.answerC},
-                {content: formState.answerD},
+                formState.answerA,
+                formState.answerB,
+                formState.answerC,
+                formState.answerD
             ],
             correctAnswerIndex: formState.correctAnswer,
         };
@@ -46,7 +46,7 @@ const NewQuestionForm: React.FC = () => {
         // mode: 'cors', 
         // headers: { 'Content-Type': 'application/json' },
         // headers: { 'Content-Type': 'Question' },
-        fetch('http://127.0.0.1:8080/in', {  // Enter your IP address here
+        fetch('http://127.0.0.1:8080/question/new', {
 
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
