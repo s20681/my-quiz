@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 
 const QuizContainer = styled.div`
@@ -41,7 +41,8 @@ interface QuizComponentProps {
     quizzes: Quiz[];
 }
 
-const QuizComponent: React.FC<QuizComponentProps> = ({ quizzes }) => {
+const QuizComponent: React.FC = () => {
+  const location = useLocation();
   const navigate = useNavigate();
   const [selectedQuiz, setSelectedQuiz] = useState<Quiz | null>(null);
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState<number>(0);
@@ -51,7 +52,7 @@ const QuizComponent: React.FC<QuizComponentProps> = ({ quizzes }) => {
   useEffect(() => {
     // Fetch the selected quiz data based on the quiz ID or any other identifier
     // For simplicity, we'll set it to the first quiz in mockedData
-    setSelectedQuiz(quizzes[0]);
+    setSelectedQuiz(location.state);
   }, []);
 
   useEffect(() => {
@@ -80,6 +81,7 @@ const QuizComponent: React.FC<QuizComponentProps> = ({ quizzes }) => {
     } else {
       // End of quiz, display points
       alert(`Quiz completed! You scored ${points} points.`);
+      //TODO: send quiz results to backend
       navigate('/quiz/highscores'); // Redirect to quiz list or any other page
     }
   };

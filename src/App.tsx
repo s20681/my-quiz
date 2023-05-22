@@ -6,6 +6,7 @@ import NewQuizForm from './components/NewQuizFormComponent';
 import RegisterComponent from './components/RegisterComponent';
 import QuizListComponent from './components/QuizListComponent';
 import QuizComponent from './components/QuizComponent';
+import QuizHighScores from './components/QuizHighscoresComponent';
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 
 const quizzes = [ 
@@ -33,7 +34,8 @@ function App() {
           <Route path="/question/new" element={<NewQuestionForm/>} />
           <Route path="/quiz/new" element={<NewQuizForm/>} />
           <Route path="/quiz/all" element={<QuizListComponent quizzes={quizzes}/>} />
-          <Route path="/quiz/:quizId" element={<QuizComponent quizzes={quizzes}/>} />
+          <Route path="/quiz/highscores" element={<QuizHighScores/>} />
+          <Route path="/quiz/:quizId" element={<QuizComponent />} />
 
           {/* <Route path="*" element={<NoPage />} /> */}
       </Routes>

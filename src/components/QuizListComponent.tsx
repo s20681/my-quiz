@@ -38,16 +38,16 @@ interface QuizListComponentProps {
 const QuizListComponent: React.FC<QuizListComponentProps> = ({ quizzes }) => {
   const navigate = useNavigate();
 
-  const handleQuizClick = (quizId: number) => {
+  const handleQuizClick = (quizId: number, index: number) => {
     // Handle quiz click, navigate to the quiz component or perform any other action
-    navigate(`/quiz/${quizId}`);
+    navigate(`/quiz/${quizId}`, {state : quizzes[index]});
   };
 
   return (
     <QuizListContainer>
       <ul>
-        {quizzes.map((quiz) => (
-          <li key={quiz.id} onClick={() => handleQuizClick(quiz.id)}>
+        {quizzes.map((quiz, index) => (
+          <li key={quiz.id} onClick={() => handleQuizClick(quiz.id, index)}>
             <div>Name: {quiz.name}</div>
             <div>Category: {quiz.category}</div>
             <div>Description: {quiz.description}</div>
