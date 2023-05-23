@@ -7,6 +7,7 @@ import RegisterComponent from './components/RegisterComponent';
 import QuizListComponent from './components/QuizListComponent';
 import QuizComponent from './components/QuizComponent';
 import QuizHighScores from './components/QuizHighscoresComponent';
+import ActivateAccountComponent from './components/ActivateAccountComponent';
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 
 const quizzes = [ 
@@ -30,6 +31,7 @@ function App() {
       <Route index element={<LoginComponent />} />
         <Route path="/login" element={<LoginComponent/>}/>
         <Route path="/register" element={<RegisterComponent/>}/>
+        <Route path="/activate" element={<ActivateAccountComponent/>}/>
           {/* <Route path="blogs" element={<Blogs />} /> */}
           <Route path="/question/new" element={<NewQuestionForm/>} />
           <Route path="/quiz/new" element={<NewQuizForm/>} />

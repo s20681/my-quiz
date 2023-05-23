@@ -1,12 +1,13 @@
-import React, { useState } from 'react';
+import React, { FormEvent, useState } from 'react';
 import { Formik, Form, Field, ErrorMessage } from 'formik';
+import { useNavigate } from 'react-router-dom'
 import * as Yup from 'yup';
 import styled from 'styled-components';
 import pl from 'yup-locale-pl';
 
 Yup.setLocale(pl);
 
-interface Employee {
+interface FormData {
     login: string,
     password: string,
     email: string
@@ -15,12 +16,6 @@ interface Employee {
 const InputLabel = styled.label`
   display: block;
 `;
-
-const initialValues = {
-  login: '',
-  password: '',
-  email: ''
-};
 
 const validationSchema = Yup.object().shape({
     login: Yup.string()
@@ -36,18 +31,45 @@ const validationSchema = Yup.object().shape({
     .required('Adres e-mail jest wymagany')
 });
 
-const RegisterComponent = () => {
+const RegisterComponent: React.FC = () => {
+  const initialValues = {
+    login: '',
+    password: '',
+    email: ''
+  };
+
   const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
-  const [employees, setEmployees] = useState<Employee[]>([]);
-
-
-  const handleSubmit = (values: any, { resetForm }: any): void => {
+  const [responseMessage, setResponseMessage] = useState('');
+  const [formData, setformData] = useState(initialValues);
+  const navigate = useNavigate();
+ 
+  const handleSubmit = (values: FormData) => {
     setIsSubmitting(true);
-    setTimeout(() => {
-      setEmployees([...employees, values]);
-      setIsSubmitting(false);
-      resetForm();
-    }, 500);
+
+    fetch('http://localhost:8080/user/register', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(values)
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        if (data.success == "true") {
+          setResponseMessage('Registration successful! You will be redirected to activation screen.');
+          setTimeout(() => {
+            navigate('/activate');
+          }, 5000); // Delay the redirection by 5000 milliseconds (5 seconds)
+
+        } else {
+          setResponseMessage('Registration failed. User already exists.');
+        }
+        setIsSubmitting(false);
+      })
+      .catch((error) => {
+        console.error('Error:', error);
+        setResponseMessage('An error occurred during registration.');
+      });
   };
 
   return (
@@ -83,7 +105,7 @@ const RegisterComponent = () => {
         )}
       </Formik>
       <ul>
-        {employees.map((employee, index) => (
+        {[formData].map((employee, index) => (
           <li key={index}>
             <p>Login: {employee.login} </p>
             <p>Hasło: {employee.password} </p>
@@ -91,6 +113,8 @@ const RegisterComponent = () => {
           </li>
         ))}
       </ul>
+
+      {responseMessage && <p>{responseMessage}</p>}
     </div>
   );
 };
