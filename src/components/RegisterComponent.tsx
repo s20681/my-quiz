@@ -55,7 +55,7 @@ const RegisterComponent: React.FC = () => {
     })
       .then((response) => response.json())
       .then((data) => {
-        if (data.success == "true") {
+        if (data.success === "true") {
           setResponseMessage('Registration successful! You will be redirected to activation screen.');
           setTimeout(() => {
             navigate('/activate');
@@ -104,15 +104,6 @@ const RegisterComponent: React.FC = () => {
           </Form>
         )}
       </Formik>
-      <ul>
-        {[formData].map((employee, index) => (
-          <li key={index}>
-            <p>Login: {employee.login} </p>
-            <p>Hasło: {employee.password} </p>
-            <p>Email: {employee.email}</p>
-          </li>
-        ))}
-      </ul>
 
       {responseMessage && <p>{responseMessage}</p>}
     </div>
