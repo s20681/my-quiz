@@ -1,6 +1,7 @@
 import { useNavigate } from 'react-router-dom'
-import React, { ChangeEvent, useState } from 'react';
+import React, { ChangeEvent, useState, useContext } from 'react';
 import { Formik, Form, Field, ErrorMessage } from 'formik';
+import { AuthContext } from './AuthContext';
 import * as Yup from 'yup';
 import styled from 'styled-components';
 import pl from 'yup-locale-pl';
@@ -30,6 +31,7 @@ const LoginComponent: React.FC = () => {
     const navigate = useNavigate();
     const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
     const [responseMessage, setResponseMessage] = useState('');
+    const authContext = useContext(AuthContext);
     const [formData, setFormData] = useState({
         login: '',
         password: ''
@@ -60,6 +62,7 @@ const LoginComponent: React.FC = () => {
           .then((response) => response.json())
           .then((data) => {
             if (data.success === "true") {
+              authContext.login(data);
               setResponseMessage('Login successful! You will be redirected to home screen.');
               setTimeout(() => {
                 navigate('/quiz/all');
