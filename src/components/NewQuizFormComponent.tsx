@@ -1,4 +1,5 @@
 import React, { ChangeEvent, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 interface FormState {
     name: string,
@@ -8,11 +9,12 @@ interface FormState {
   }
 
 const NewQuizForm: React.FC = () => {
+    const navigate = useNavigate();
     const [formState, setFormState] = useState<FormState>({
         name: '',
         description: '',
         category: '',
-        difficulty: ''
+        difficulty: 'LOW'
       });
 
       const handleChange = (event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>): void => {
@@ -44,6 +46,15 @@ const NewQuizForm: React.FC = () => {
             body: JSON.stringify(formData) // body data type must match "Content-Type" header
 
         })
+        .then((response) => response.json())
+        .then((data) => {
+          if (data) {
+            console.log("new quiz:" + data);
+            navigate('/quiz/all');
+          }      
+        }).catch((error) => {
+            console.error('Error:', error);
+          });
         console.log(formData)
     };
 

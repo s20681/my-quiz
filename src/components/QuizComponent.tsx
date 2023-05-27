@@ -9,10 +9,6 @@ const QuizContainer = styled.div`
   margin-bottom: 10px;
 `;
 
-const QuestionContainer = styled.div`
-  margin-bottom: 20px;
-`;
-
 interface Answer {
   id: number;
   content: string;
@@ -37,10 +33,6 @@ interface Quiz {
   questions: Question[];
 }
 
-interface QuizComponentProps {
-    quizzes: Quiz[];
-}
-
 const QuizComponent: React.FC = () => {
   const location = useLocation();
   const navigate = useNavigate();
@@ -53,6 +45,7 @@ const QuizComponent: React.FC = () => {
     // Fetch the selected quiz data based on the quiz ID or any other identifier
     // For simplicity, we'll set it to the first quiz in mockedData
     setSelectedQuiz(location.state);
+    console.log(location.state);
   }, []);
 
   useEffect(() => {
