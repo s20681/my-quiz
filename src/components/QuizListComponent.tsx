@@ -1,4 +1,3 @@
-import { response } from 'express';
 import React, { useContext, useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
@@ -58,7 +57,7 @@ const QuizListComponent: React.FC = () => {
           // Ustawienie pobranej listy quizów w stanie komponentu
           setQuizzes(data);
         } else {
-          setResponseMessage("An error occurred while fetching quiz list.");
+          setResponseMessage("Quiz list seems empty for now.");
         }
       })
       .catch((error) => {
@@ -68,24 +67,19 @@ const QuizListComponent: React.FC = () => {
   };
 
   const handleQuizClick = (quizId: number, index: number) => {
-    fetch(`http://localhost:8080/quiz/get?id=${quizId}`, {
-      method: 'GET',
-      headers: {
-        'Content-Type': 'application/json'
-      }
-    })
-      .then((response) => response.json())
-      .then((data) => {
-        if (data.success === "true") {
-          navigate(`/quiz/${quizId}`, { state: data.quiz });
-        } else {
-            setResponseMessage(data.message);
-        }
-      })
-      .catch((error) => {
-        console.error('Error:', error);
-        setResponseMessage('An error occurred during registration.');
-      });
+    if (quizzes !== undefined && quizzes[index].questions.length > 0) {
+      navigate(`/quiz/solve/${quizId}`, { state: quizzes[index] });
+    } else {
+      setResponseMessage("Quiz does not exist or does not have any questions yet.");
+    }
+  };
+
+  const handleEditQuizClick = (quizId: number, index: number) => {
+    if (quizzes !== undefined) {
+      navigate(`/quiz/edit/${quizId}`, { state: quizzes[index] });
+    } else {
+      setResponseMessage("Something went wrong.");
+    }
   };
 
   const handleLogout = () => {
@@ -97,22 +91,33 @@ const QuizListComponent: React.FC = () => {
     navigate(`/quiz/new`);
   };
 
+  const handleRanking = () => {
+    navigate(`/ranking`);
+  };
+
   return (
     <div>
       {authContext.user ? (
         <QuizListContainer>
           <p>Logged in as username: {authContext.user.login} Id: {authContext.user.id}</p>
-          <button onClick={() => handleLogout()}> LOGOUT </button>
           <button onClick={() => handleCreateNew()}> Create new quiz </button>
+          <button onClick={() => handleRanking()}> User ranking </button>
+          <button onClick={() => handleLogout()}> LOGOUT </button>
           <ul>
+
             {quizzes?.map((quiz, index) => (
-              <li key={quiz.id} onClick={() => handleQuizClick(quiz.id, index)}>
-                <div>Name: {quiz.name}</div>
-                <div>Category: {quiz.category}</div>
-                <div>Description: {quiz.description}</div>
-                <div>Difficulty: {quiz.difficulty}</div>
-                <div>Owner: {quiz.ownerName}</div>
-                { authContext.user?.login === quiz.ownerName && <button>EDIT</button>}
+              <li key={quiz.id}>
+                <div
+                  onClick={() => handleQuizClick(quiz.id, index)}
+                  style={{ cursor: 'pointer' }}
+                >
+                  <div>Name: {quiz.name}</div>
+                  <div>Category: {quiz.category}</div>
+                  <div>Description: {quiz.description}</div>
+                  <div>Difficulty: {quiz.difficulty}</div>
+                  <div>Owner: {quiz.ownerName}</div>
+                </div>
+                {authContext.user?.login === quiz.ownerName && <button onClick={() => handleEditQuizClick(quiz.id, index)}>EDIT</button>}
 
               </li>
             ))}
@@ -122,7 +127,7 @@ const QuizListComponent: React.FC = () => {
         <p>User not logged in</p>
       )}
 
-    {responseMessage && <p>{responseMessage}</p>}
+      {responseMessage && <p>{responseMessage}</p>}
     </div>
   );
 };

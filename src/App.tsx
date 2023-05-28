@@ -6,10 +6,12 @@ import NewQuestionForm from './components/NewQuestionFormComponent';
 import NewQuizForm from './components/NewQuizFormComponent';
 import RegisterComponent from './components/RegisterComponent';
 import QuizListComponent from './components/QuizListComponent';
+import QuizEdit from './components/QuizEditComponent';
 import QuizComponent from './components/QuizComponent';
 import QuizHighScores from './components/QuizHighscoresComponent';
 import ActivateAccountComponent from './components/ActivateAccountComponent';
 import { BrowserRouter, Routes, Route } from "react-router-dom";
+import UserRanking from './components/UserRankingComponent';
 
 function App() {
   return (
@@ -17,17 +19,24 @@ function App() {
     <BrowserRouter>
       <Routes>
         <Route index element={<LoginComponent />} />
-        <Route path="/login" element={<LoginComponent />} />
         <Route path="/register" element={<RegisterComponent />} />
+        <Route path="/login" element={<LoginComponent />} />
         <Route path="/activate" element={<ActivateAccountComponent />} />
-        {/* <Route path="blogs" element={<Blogs />} /> */}
-        <Route path="/question/new" element={<NewQuestionForm />} />
-        <Route path="/quiz/new" element={<NewQuizForm />} />
+        <Route path="/ranking" element={<UserRanking />} />
         <Route path="/quiz/all" element={<QuizListComponent />} />
+        <Route path="/quiz/solve/:quizId" element={<QuizComponent />} />
         <Route path="/quiz/highscores" element={<QuizHighScores />} />
-        <Route path="/quiz/:quizId" element={<QuizComponent />} />
+
+
+        <Route path="/quiz/new" element={<NewQuizForm />} />
+        <Route path="/quiz/edit/:quizId" element={<QuizEdit />} />
+        <Route path="/question/new" element={<NewQuestionForm />} />
+
+        
+        
 
         {/* <Route path="*" element={<NoPage />} /> */}
+        {/* <Route path="blogs" element={<Blogs />} /> */}
       </Routes>
     </BrowserRouter>
     </AuthProvider>
