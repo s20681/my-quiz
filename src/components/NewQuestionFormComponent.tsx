@@ -10,25 +10,27 @@ interface FormState {
     correctAnswer: string,
 }
 
+const initialData = {
+    question: '',
+    answerA: '',
+    answerB: '',
+    answerC: '',
+    answerD: '',
+    correctAnswer: ''
+}
+
 const NewQuestionForm: React.FC = () => {
     const location = useLocation();
     const navigate = useNavigate();
     const [quizId, setSelectedQuizID] = useState(null)
-    const [formState, setFormState] = useState<FormState>({
-        question: '',
-        answerA: '',
-        answerB: '',
-        answerC: '',
-        answerD: '',
-        correctAnswer: '',
-    });
+    const [formState, setFormState] = useState<FormState>(initialData);
 
     useEffect(() => {
         // Fetch the selected quiz data based on the quiz ID or any other identifier
         // For simplicity, we'll set it to the first quiz in mockedData
         setSelectedQuizID(location.state.id);
         console.log("Creating new question for quiz :" + quizId);
-      }, []);
+    }, []);
 
     const handleChange = (event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>): void => {
         const { name, value } = event.target;
@@ -65,6 +67,7 @@ const NewQuestionForm: React.FC = () => {
 
         })
         console.log(formData)
+        setFormState(initialData)
     };
 
     const handleGoBack = () => {
@@ -99,7 +102,7 @@ const NewQuestionForm: React.FC = () => {
             </form>
 
             <div>
-                <button onClick={() => handleGoBack()}> Cancel </button>
+                <button onClick={() => handleGoBack()}> Go back </button>
             </div>
 
         </div>

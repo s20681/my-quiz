@@ -36,7 +36,7 @@ interface Quiz {
 interface Answer {
   id: number;
   content: string;
-  correct: boolean;
+  isCorrect: boolean;
 }
 
 interface Question {
@@ -49,14 +49,13 @@ interface Question {
 
 const QuizEdit: React.FC = () => {
   const location = useLocation();
-  const [selectedQuiz, setEditedQuiz] = useState<Quiz>();
+  const [editedQuiz, setEditedQuiz] = useState<Quiz>();
   const navigate = useNavigate();
   const [responseMessage, setResponseMessage] = useState('');
   const [questions, setQuestions] = useState<Question[]>();
   const authContext = useContext(AuthContext);
 
   useEffect(() => {
-    console.log("id value right before fetching:" + location.state.id)
     fetch(`http://localhost:8080/quiz/get?id=${location.state.id}`, {
       method: 'GET',
       headers: {
@@ -66,10 +65,9 @@ const QuizEdit: React.FC = () => {
       .then(
         (response) => response.json())
       .then((data) => {
-        console.log("data received: " + JSON.stringify(data));
         if (data) {
-          // Ustawienie pobranej listy quizów w stanie komponentu
-          setEditedQuiz(data as Quiz);
+          setEditedQuiz(data);
+          console.log(data)
         } else {
           setResponseMessage("quiz data empty?");
         }
@@ -78,7 +76,7 @@ const QuizEdit: React.FC = () => {
         console.error('Error:', error);
         setResponseMessage('An error occurred while fetching quiz to edit.');
       });
-  }, []);
+  }, [questions]);
 
   const handleEditQuestion = (quizId: number, index: number) => {
     //TODO: navigate to a view identical as new question one, but with slightly changed logic.
@@ -87,15 +85,38 @@ const QuizEdit: React.FC = () => {
 
   const handleCreateNewQuestion = () => {
     //navigate to new question view
-    navigate(`/question/new`, { state: selectedQuiz });
+    navigate(`/question/new`, { state: editedQuiz });
   };
 
-  const handleDeleteQuestion = () => {
-    //TODO: send deletion request to backend, after response pull question list again from backend
+  const handleDeleteQuestion = (questionId: any) => {
+    fetch(`http://localhost:8080/question/remove?id=${questionId}`, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    }).then(() => {
+        console.log("setting questions to null")
+        setQuestions([])
+      })
+      .catch(error => {
+        console.error('Error:', error);
+        setResponseMessage('An error occurred while deleting the quiz.');
+      });
   };
 
   const handleDeleteQuiz = () => {
-    //TODO: send deletion request to backend, after response navigate to quiz list.
+    fetch(`http://localhost:8080/quiz/remove?id=${location.state.id}`, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    }).then(() => {
+        navigate(`/quiz/all`);
+      })
+      .catch(error => {
+        console.error('Error:', error);
+        setResponseMessage('An error occurred while deleting the quiz.');
+      });
   };
 
   const handleGoHome = () => {
@@ -112,29 +133,41 @@ const QuizEdit: React.FC = () => {
       {authContext.user ? (
         <QuestionListContainer>
           <p>Logged in as username: {authContext.user.login} Id: {authContext.user.id}</p>
-          <p>Currently editing quiz: {selectedQuiz?.id} {selectedQuiz?.name}</p>
+          <p>Currently editing quiz: {editedQuiz?.id} {editedQuiz?.name}</p>
           <button onClick={() => handleGoHome()}> Go back to quiz list </button>
           <button onClick={() => handleCreateNewQuestion()}> Add new question </button>
           <button onClick={() => handleDeleteQuiz()}> Delete the quiz </button>
           <button onClick={() => handleLogout()}> LOGOUT </button>
-          <ul>
-            {selectedQuiz?.questions?.map((question, index) => (
-              <li key={question.id} onClick={() => handleEditQuestion(question.id, index)}>
-                <div>Question: {question.content}</div>
-                <div>Type: {question.questionType}</div>
-                <div>
-                  <button>REMOVE</button>
-                </div>
-
-              </li>
-            ))}
-          </ul>
+          {editedQuiz?.questions?.length ? (
+            <ul>
+              {editedQuiz?.questions.map((question, index) => (
+                <li key={question.id}>
+                  <div  onClick={() => handleEditQuestion(question.id, index)}
+                  style={{ cursor: 'pointer' }}
+                  >
+                  <div>Question: {question.content}</div>
+                  <div>Type: {question.questionType}</div>
+                  <div>
+                    <ul>
+                      {question.answers.map((answer: Answer) => (
+                        <li key={answer.id}>{answer.content} : {String(answer.isCorrect)}</li>
+                      ))}
+                    </ul>
+                  </div>
+                  </div>
+                  <button onClick={() => handleDeleteQuestion(question.id)}>REMOVE</button>
+                </li>
+              ))}
+            </ul>
+          ) : (
+            <p>No questions available yet.</p>
+          )}
         </QuestionListContainer>
       ) : (
         <p>User not logged in</p>
       )}
 
-    {responseMessage && <p>{responseMessage}</p>}
+      {responseMessage && <p>{responseMessage}</p>}
     </div>
   );
 };
