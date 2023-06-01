@@ -80,7 +80,7 @@ const LoginComponent: React.FC = () => {
           })
           .catch((error) => {
             console.error('Error:', error);
-            setResponseMessage('An error occurred during registration.');
+            setResponseMessage('An error occurred during login process.');
           });
       };
 

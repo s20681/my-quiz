@@ -2,6 +2,7 @@ import React, { useContext, useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import { AuthContext } from './AuthContext';
+import { Quiz } from '../interfaces';
 
 const QuizListContainer = styled.div`
   ul {
@@ -21,16 +22,6 @@ const QuizListContainer = styled.div`
     }
   }
 `;
-
-interface Quiz {
-  id: number;
-  name: string;
-  description: string;
-  category: string;
-  difficulty: string;
-  ownerName: string;
-  questions: any[];
-}
 
 const QuizListComponent: React.FC = () => {
   const navigate = useNavigate();

@@ -1,5 +1,6 @@
 import { response } from 'express';
 import React, { useContext, useState, useEffect } from 'react';
+import { Quiz, Question, Answer } from '../interfaces';
 import { useNavigate, useLocation } from 'react-router-dom';
 import styled from 'styled-components';
 import { AuthContext } from './AuthContext';
@@ -22,30 +23,6 @@ const QuestionListContainer = styled.div`
     }
   }
 `;
-
-interface Quiz {
-  id: number;
-  name: string;
-  description: string;
-  category: string;
-  difficulty: string;
-  ownerName: string;
-  questions: any[];
-}
-
-interface Answer {
-  id: number;
-  content: string;
-  isCorrect: boolean;
-}
-
-interface Question {
-  id: number;
-  content: string;
-  correctAnswerIndex: number;
-  questionType: string;
-  answers: Answer[];
-}
 
 const QuizEdit: React.FC = () => {
   const location = useLocation();
@@ -78,9 +55,8 @@ const QuizEdit: React.FC = () => {
       });
   }, [questions]);
 
-  const handleEditQuestion = (quizId: number, index: number) => {
-    //TODO: navigate to a view identical as new question one, but with slightly changed logic.
-    //it should update existing question object, if not possible then just remove and create a new one in its place.
+  const handleEditQuestion = (question: Question) => {
+    navigate(`/question/edit/${question.id}`, { state: question });
   };
 
   const handleCreateNewQuestion = () => {
@@ -95,9 +71,9 @@ const QuizEdit: React.FC = () => {
         'Content-Type': 'application/json'
       }
     }).then(() => {
-        console.log("setting questions to null")
-        setQuestions([])
-      })
+      console.log("setting questions to null")
+      setQuestions([])
+    })
       .catch(error => {
         console.error('Error:', error);
         setResponseMessage('An error occurred while deleting the quiz.');
@@ -111,8 +87,8 @@ const QuizEdit: React.FC = () => {
         'Content-Type': 'application/json'
       }
     }).then(() => {
-        navigate(`/quiz/all`);
-      })
+      navigate(`/quiz/all`);
+    })
       .catch(error => {
         console.error('Error:', error);
         setResponseMessage('An error occurred while deleting the quiz.');
@@ -142,18 +118,18 @@ const QuizEdit: React.FC = () => {
             <ul>
               {editedQuiz?.questions.map((question, index) => (
                 <li key={question.id}>
-                  <div  onClick={() => handleEditQuestion(question.id, index)}
-                  style={{ cursor: 'pointer' }}
+                  <div onClick={() => handleEditQuestion(question)}
+                    style={{ cursor: 'pointer' }}
                   >
-                  <div>Question: {question.content}</div>
-                  <div>Type: {question.questionType}</div>
-                  <div>
-                    <ul>
-                      {question.answers.map((answer: Answer) => (
-                        <li key={answer.id}>{answer.content} : {String(answer.isCorrect)}</li>
-                      ))}
-                    </ul>
-                  </div>
+                    <div>Question: {question.content}</div>
+                    <div>Type: {question.questionType}</div>
+                    <div>
+                      <ul>
+                        {question.answers.map((answer: Answer) => (
+                          <li key={answer.id}>{answer.content} : {String(answer.isCorrect)}</li>
+                        ))}
+                      </ul>
+                    </div>
                   </div>
                   <button onClick={() => handleDeleteQuestion(question.id)}>REMOVE</button>
                 </li>

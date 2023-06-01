@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
+import { Answer, Question, Quiz } from '../interfaces';
 import styled from 'styled-components';
 
 const QuizContainer = styled.div`
@@ -8,30 +9,6 @@ const QuizContainer = styled.div`
   border-radius: 5px;
   margin-bottom: 10px;
 `;
-
-interface Answer {
-  id: number;
-  content: string;
-  correct: boolean;
-}
-
-interface Question {
-  id: number;
-  content: string;
-  correctAnswerIndex: number;
-  questionType: string;
-  answers: Answer[];
-}
-
-interface Quiz {
-  id: number;
-  name: string;
-  description: string;
-  category: string;
-  difficulty: string;
-  ownerName: string;
-  questions: Question[];
-}
 
 const QuizComponent: React.FC = () => {
   const location = useLocation();
@@ -64,7 +41,7 @@ const QuizComponent: React.FC = () => {
   const handleAnswer = (selectedAnswerIndex: number | null) => {
     const currentQuestion = selectedQuiz!.questions[currentQuestionIndex];
 
-    if (selectedAnswerIndex !== null && currentQuestion.answers[selectedAnswerIndex].correct) {
+    if (selectedAnswerIndex !== null && currentQuestion.answers[selectedAnswerIndex].isCorrect) {
       setPoints((prevPoints) => prevPoints + 1);
     }
 

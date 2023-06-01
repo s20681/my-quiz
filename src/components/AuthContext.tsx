@@ -1,25 +1,11 @@
 import React, { createContext, useState } from 'react';
-
-interface UserData {
-  login: string;
-  id: string;
-}
-
-interface AuthContextType {
-  user: UserData | null;
-  login: (userData: UserData) => void;
-  logout: () => void;
-}
+import { AuthContextType, AuthProviderProps, UserData } from '../interfaces';
 
 export const AuthContext = createContext<AuthContextType>({
   user: null,
-  login: () => {},
-  logout: () => {},
+  login: () => { },
+  logout: () => { },
 });
-
-interface AuthProviderProps {
-  children: React.ReactNode; // Define the children prop
-}
 
 export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   const [user, setUser] = useState<UserData | null>(null);

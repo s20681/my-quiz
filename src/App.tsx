@@ -3,6 +3,7 @@ import React from 'react';
 import { AuthProvider } from './components/AuthContext';
 import LoginComponent from './components/LoginComponent';
 import NewQuestionForm from './components/NewQuestionFormComponent';
+import EditQuestionForm from './components/EditQuestionFormComponent';
 import NewQuizForm from './components/NewQuizFormComponent';
 import RegisterComponent from './components/RegisterComponent';
 import QuizListComponent from './components/QuizListComponent';
@@ -31,6 +32,7 @@ function App() {
         <Route path="/quiz/new" element={<NewQuizForm />} />
         <Route path="/quiz/edit/:quizId" element={<QuizEdit />} />
         <Route path="/question/new" element={<NewQuestionForm />} />
+        <Route path="/question/edit/:questionId" element={<EditQuestionForm />} />
 
         
         
