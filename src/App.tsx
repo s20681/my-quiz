@@ -9,7 +9,7 @@ import RegisterComponent from './components/RegisterComponent';
 import QuizListComponent from './components/QuizListComponent';
 import QuizEdit from './components/QuizEditComponent';
 import QuizComponent from './components/QuizComponent';
-import QuizHighScores from './components/QuizHighscoresComponent';
+import HighScores from './components/HighscoresComponent';
 import ActivateAccountComponent from './components/ActivateAccountComponent';
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import UserRanking from './components/UserRankingComponent';
@@ -26,7 +26,7 @@ function App() {
         <Route path="/ranking" element={<UserRanking />} />
         <Route path="/quiz/all" element={<QuizListComponent />} />
         <Route path="/quiz/solve/:quizId" element={<QuizComponent />} />
-        <Route path="/quiz/highscores" element={<QuizHighScores />} />
+        <Route path="/quiz/highscores" element={<HighScores />} />
 
 
         <Route path="/quiz/new" element={<NewQuizForm />} />

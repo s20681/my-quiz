@@ -1,4 +1,5 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
+import { AuthContext } from './AuthContext';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { Answer, Question, Quiz } from '../interfaces';
 import styled from 'styled-components';
@@ -12,6 +13,7 @@ const QuizContainer = styled.div`
 
 const QuizComponent: React.FC = () => {
   const location = useLocation();
+  const authContext = useContext(AuthContext);
   const navigate = useNavigate();
   const [selectedQuiz, setSelectedQuiz] = useState<Quiz | null>(null);
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState<number>(0);
@@ -38,22 +40,46 @@ const QuizComponent: React.FC = () => {
     return () => clearInterval(interval);
   }, [timer]);
 
+  useEffect(() => {
+    if (selectedQuiz !== null && currentQuestionIndex >= selectedQuiz!.questions.length ) {
+      alert(`Quiz completed! You scored ${points} points.`);
+      console.log({ userId: authContext.user?.id, quizId: selectedQuiz?.id, points: points })
+
+      fetch('http://127.0.0.1:8080/highscore/add', {
+
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ userId: authContext.user?.id, quizId: selectedQuiz?.id, points: points }) // body data type must match "Content-Type" header
+
+      })
+        .then((response) => {
+          if (response.ok) {
+            navigate('/quiz/highscores');
+          } else {
+            throw new Error('Error: ' + response.status);
+          }
+        })
+    }
+  }, [points]);
+
   const handleAnswer = (selectedAnswerIndex: number | null) => {
     const currentQuestion = selectedQuiz!.questions[currentQuestionIndex];
+    console.log(currentQuestion)
+    console.log("selected answer index" + selectedAnswerIndex)
+    if (selectedAnswerIndex !== null) {
+      console.log("is correct?" + currentQuestion.answers[selectedAnswerIndex].isCorrect)
+    }
 
     if (selectedAnswerIndex !== null && currentQuestion.answers[selectedAnswerIndex].isCorrect) {
+      console.log("trying to add points!")
       setPoints((prevPoints) => prevPoints + 1);
     }
 
-    if (currentQuestionIndex + 1 < selectedQuiz!.questions.length) {
+    if (currentQuestionIndex + 1 <= selectedQuiz!.questions.length) {
       setCurrentQuestionIndex((prevIndex) => prevIndex + 1);
       setTimer(30); // Reset timer for the next question
-    } else {
-      // End of quiz, display points
-      alert(`Quiz completed! You scored ${points} points.`);
-      //TODO: send quiz results to backend
-      navigate('/quiz/highscores'); // Redirect to quiz list or any other page
     }
+
   };
 
   if (!selectedQuiz) {

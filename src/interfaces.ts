@@ -26,6 +26,14 @@ export interface UserData {
     login: string;
     id: string;
   }
+
+export interface Highscore {
+  id: string;
+  person: {};
+  quiz: Quiz;
+  points: number;
+  localDateTime: string;
+}
   
 export interface AuthContextType {
     user: UserData | null;
