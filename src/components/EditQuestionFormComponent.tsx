@@ -50,21 +50,26 @@ const EditQuestionForm: React.FC = () => {
     };
 
     const handleSubmit = (event: React.FormEvent) => {
+        location.state.answers[0].content = formState.answerA
+        location.state.answers[1].content = formState.answerB
+        location.state.answers[2].content = formState.answerC
+        location.state.answers[3].content = formState.answerD
+
         event.preventDefault();
         const formData = {
             questionID: question?.id,
             type: "SINGLE_CHOICE",
             content: formState.question,
             answers: [
-                formState.answerA,
-                formState.answerB,
-                formState.answerC,
-                formState.answerD
+                location.state.answers[0],
+                location.state.answers[1],
+                location.state.answers[2],
+                location.state.answers[3],
             ],
             correctAnswerIndex: formState.correctAnswer,
         };
 
-        console.log(question?.id)
+        console.log(formData)
 
         // mode: 'cors', 
         // headers: { 'Content-Type': 'application/json' },

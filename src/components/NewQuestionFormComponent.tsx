@@ -48,10 +48,10 @@ const NewQuestionForm: React.FC = () => {
             type: "SINGLE_CHOICE",
             content: formState.question,
             answers: [
-                formState.answerA,
-                formState.answerB,
-                formState.answerC,
-                formState.answerD
+                {id: null, content: formState.answerA, isCorrect: false},
+                {id: null, content: formState.answerB, isCorrect: false},
+                {id: null, content: formState.answerC, isCorrect: false},
+                {id: null, content: formState.answerD, isCorrect: false},
             ],
             correctAnswerIndex: formState.correctAnswer,
         };
