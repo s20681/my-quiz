@@ -60,7 +60,7 @@ const QuizComponent: React.FC = () => {
           }
         })
     }
-  }, [points]);
+  }, [currentQuestionIndex]);
 
   const handleAnswer = (selectedAnswerIndex: number | null) => {
     const currentQuestion = selectedQuiz!.questions[currentQuestionIndex];

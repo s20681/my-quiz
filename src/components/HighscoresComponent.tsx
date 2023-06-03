@@ -22,13 +22,6 @@ const HighScoresContainer = styled.div`
   }
 `;
 
-
-const highscoresMock = [
-    {"id": 1, "time": "2m 30s", "points": 10, "userName": "best_user"},
-    {"id": 2, "time": "7m 23s", "points": 6, "userName": "admin"},
-    {"id": 3, "time": "1m 06s", "points": 1, "userName": "best_user"},
-]
-
 const HighScores: React.FC = () => {
   const navigate = useNavigate();
   const [responseMessage, setResponseMessage] = useState('');
@@ -49,8 +42,8 @@ const HighScores: React.FC = () => {
         (response) => response.json())
       .then((data) => {
         if (data.length > 0) {
-          // Ustawienie pobranej listy quizów w stanie komponentu
           setHighscores(data);
+          console.log(JSON.stringify(data))
         } else {          
           setResponseMessage("Highscores list seems empty.");
         }
@@ -66,18 +59,25 @@ const HighScores: React.FC = () => {
   };
 
   return (
+    <div>
+    {highscores && (
     <HighScoresContainer>
+      
       <ul>
-        {highscoresMock.map((score, index) => (
+        {highscores.map((score, index) => (
           <li key={score.id}>
             <div>Points: {score.points}</div>
-            <div>Time: {score.time}</div>
-            <div>User: {score.userName}</div>
+            <div>Time: {new Date(score.date).toLocaleString()}</div>
+            <div>User: {score.person?.login || 'Unknown'}</div>
           </li>
         ))}
       </ul>
       <button onClick={() => handleGotoMain()}> Back to quizzes </button>
+
+      {responseMessage && <p>{responseMessage}</p>}
     </HighScoresContainer>
+    )}
+    </div>
   );
 };
 

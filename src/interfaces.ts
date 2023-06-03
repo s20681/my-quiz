@@ -29,10 +29,10 @@ export interface UserData {
 
 export interface Highscore {
   id: string;
-  person: {};
+  person: UserData;
   quiz: Quiz;
   points: number;
-  localDateTime: string;
+  date: string;
 }
   
 export interface AuthContextType {
