@@ -1,7 +1,7 @@
-import React, { useState, useEffect, useContext } from 'react';
+import React, { useState, useEffect, useContext, useCallback } from 'react';
 import { AuthContext } from './AuthContext';
 import { useLocation, useNavigate } from 'react-router-dom';
-import { Answer, Question, Quiz } from '../interfaces';
+import { Quiz } from '../interfaces';
 import styled from 'styled-components';
 
 const QuizContainer = styled.div`
@@ -20,12 +20,31 @@ const QuizComponent: React.FC = () => {
   const [points, setPoints] = useState<number>(0);
   const [timer, setTimer] = useState<number>(30);
 
+  const handleAnswer = useCallback(
+    (selectedAnswerIndex: number | null) => {
+      const currentQuestion = selectedQuiz!.questions[currentQuestionIndex];
+      console.log(currentQuestion);
+      console.log("selected answer index" + selectedAnswerIndex);
+  
+      if (selectedAnswerIndex !== null && currentQuestion.answers[selectedAnswerIndex].isCorrect) {
+        console.log("trying to add points!");
+        setPoints((prevPoints) => prevPoints + 1);
+      }
+  
+      if (currentQuestionIndex + 1 <= selectedQuiz!.questions.length) {
+        setCurrentQuestionIndex((prevIndex) => prevIndex + 1);
+        setTimer(30); // Reset timer for the next question
+      }
+    },
+    [selectedQuiz, currentQuestionIndex]
+  );
+
   useEffect(() => {
     // Fetch the selected quiz data based on the quiz ID or any other identifier
     // For simplicity, we'll set it to the first quiz in mockedData
     setSelectedQuiz(location.state);
     console.log(location.state);
-  }, []);
+  }, [location.state]);
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -38,7 +57,7 @@ const QuizComponent: React.FC = () => {
     }
 
     return () => clearInterval(interval);
-  }, [timer]);
+  }, [timer, handleAnswer]);
 
   useEffect(() => {
     if (selectedQuiz !== null && currentQuestionIndex >= selectedQuiz!.questions.length ) {
@@ -60,27 +79,7 @@ const QuizComponent: React.FC = () => {
           }
         })
     }
-  }, [currentQuestionIndex]);
-
-  const handleAnswer = (selectedAnswerIndex: number | null) => {
-    const currentQuestion = selectedQuiz!.questions[currentQuestionIndex];
-    console.log(currentQuestion)
-    console.log("selected answer index" + selectedAnswerIndex)
-    if (selectedAnswerIndex !== null) {
-      console.log("is correct?" + currentQuestion.answers[selectedAnswerIndex].isCorrect)
-    }
-
-    if (selectedAnswerIndex !== null && currentQuestion.answers[selectedAnswerIndex].isCorrect) {
-      console.log("trying to add points!")
-      setPoints((prevPoints) => prevPoints + 1);
-    }
-
-    if (currentQuestionIndex + 1 <= selectedQuiz!.questions.length) {
-      setCurrentQuestionIndex((prevIndex) => prevIndex + 1);
-      setTimer(30); // Reset timer for the next question
-    }
-
-  };
+  }, [currentQuestionIndex, handleAnswer]);
 
   if (!selectedQuiz) {
     return <div>Loading...</div>;
