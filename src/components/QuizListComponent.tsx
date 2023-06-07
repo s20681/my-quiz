@@ -111,7 +111,7 @@ const QuizListComponent: React.FC = () => {
   const filteredAndSortedQuizzes = useMemo(() => {
     return quizzes
       ?.filter((quiz) =>
-        quiz.name.toLowerCase().includes(filter.toLowerCase())
+        quiz.name.toLowerCase().includes(filter.toLowerCase()) || quiz.category.toLowerCase().includes(filter.toLowerCase())
       )
       .sort((a, b) => {
         const compareValue = (order: 'asc' | 'desc') => {
