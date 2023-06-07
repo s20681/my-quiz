@@ -1,4 +1,4 @@
-import React, { useContext, useState, useEffect } from 'react';
+import React, { useContext, useState, useEffect, useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import { AuthContext } from './AuthContext';
@@ -27,6 +27,9 @@ const QuizListComponent: React.FC = () => {
   const navigate = useNavigate();
   const [responseMessage, setResponseMessage] = useState('');
   const [quizzes, setQuizzes] = useState<Quiz[]>();
+  const [filter, setFilter] = useState('');
+  const [sortOption, setSortOption] = useState<string>('id');
+  const [sortOrder, setSortOrder] = useState<'asc' | 'desc'>('asc');
   const authContext = useContext(AuthContext);
 
   useEffect(() => {
@@ -86,34 +89,102 @@ const QuizListComponent: React.FC = () => {
     navigate(`/ranking`);
   };
 
+  const handleSortOptionChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
+    setSortOption(event.target.value);
+  };
+
+  // Helper function to convert difficulty string to numeric value for sorting
+  const convertDifficultyToValue = (difficulty: string) => {
+    switch (difficulty) {
+      case 'LOW':
+        return 1;
+      case 'MEDIUM':
+        return 2;
+      case 'HIGH':
+        return 3;
+      default:
+        return 0;
+    }
+  };
+
+  // Sort the quizzes based on the selected sort option and order, usememo allows to calculate only if dependencies change.
+  const filteredAndSortedQuizzes = useMemo(() => {
+    return quizzes
+      ?.filter((quiz) =>
+        quiz.name.toLowerCase().includes(filter.toLowerCase())
+      )
+      .sort((a, b) => {
+        const compareValue = (order: 'asc' | 'desc') => {
+          if (order === 'asc') {
+            return 1;
+          } else {
+            return -1;
+          }
+        };
+
+        if (sortOption === 'id') {
+          return (a.id - b.id) * compareValue(sortOrder);
+        } else if (sortOption === 'category') {
+          return a.category.localeCompare(b.category) * compareValue(sortOrder);
+        } else if (sortOption === 'difficulty') {
+          return a.difficulty.localeCompare(b.difficulty) * compareValue(sortOrder);
+        } else {
+          return 0;
+        }
+      });
+  }, [quizzes, filter, sortOption, sortOrder]);
+
   return (
     <div>
       {authContext.user ? (
-        <QuizListContainer>
-          <p>Logged in as username: {authContext.user.login} Id: {authContext.user.id}</p>
-          <button onClick={() => handleCreateNew()}> Create new quiz </button>
-          <button onClick={() => handleRanking()}> User ranking </button>
+        <div>
           <button onClick={() => handleLogout()}> LOGOUT </button>
-          <ul>
+          <QuizListContainer>
+            <p>Logged in as username: {authContext.user.login} Id: {authContext.user.id}</p>
+            <button onClick={() => handleCreateNew()}> Create new quiz </button>
+            <button onClick={() => handleRanking()}> User ranking </button>
 
-            {quizzes?.map((quiz, index) => (
-              <li key={quiz.id}>
-                <div
-                  onClick={() => handleQuizClick(quiz.id, index)}
-                  style={{ cursor: 'pointer' }}
-                >
-                  <div>Name: {quiz.name}</div>
-                  <div>Category: {quiz.category}</div>
-                  <div>Description: {quiz.description}</div>
-                  <div>Difficulty: {quiz.difficulty}</div>
-                  <div>Owner: {quiz.ownerName}</div>
-                </div>
-                {authContext.user?.login === quiz.ownerName && <button onClick={() => handleEditQuizClick(quiz.id, index)}>EDIT</button>}
+            <div>
+              <input
+                type="text"
+                value={filter}
+                onChange={(e) => setFilter(e.target.value)}
+                placeholder="Filter by name or category"
+              />
 
-              </li>
-            ))}
-          </ul>
-        </QuizListContainer>
+              Sort by:
+              <select value={sortOption} onChange={handleSortOptionChange}>
+                <option value="id">Created</option>
+                <option value="category">Category</option>
+                <option value="difficulty">Difficulty</option>
+              </select>
+
+              Order:
+              <button onClick={() => setSortOrder('asc')}>Sort Ascending</button>
+              <button onClick={() => setSortOrder('desc')}>Sort Descending</button>
+            </div>
+            <ul>
+
+              {filteredAndSortedQuizzes?.map((quiz, index) => (
+                <li key={quiz.id}>
+                  <div
+                    onClick={() => handleQuizClick(quiz.id, index)}
+                    style={{ cursor: 'pointer' }}
+                  >
+                    <div>Name: {quiz.name}</div>
+                    <div>Category: {quiz.category}</div>
+                    <div>Description: {quiz.description}</div>
+                    <div>Difficulty: {quiz.difficulty}</div>
+                    <div>Owner: {quiz.ownerName}</div>
+                  </div>
+                  {authContext.user?.login === quiz.ownerName && <button onClick={() => handleEditQuizClick(quiz.id, index)}>EDIT</button>}
+
+                </li>
+              ))}
+            </ul>
+          </QuizListContainer>
+        </div>
+
       ) : (
         <p>User not logged in</p>
       )}

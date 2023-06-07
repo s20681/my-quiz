@@ -20,6 +20,7 @@ export interface Quiz {
     difficulty: string;
     ownerName: string;
     questions: Question[];
+    [key: string]: string | number | Question[]; // to allow sorting it was needed to add index signature that allows accessing its properties using a string key.
   }
 
 export interface UserData {
@@ -42,7 +43,7 @@ export interface Ranking {
   totalEasyQuizzes: number;
   totalMediumQuizzes: number;
   totalHardQuizzes: number;  
-}  
+}
   
 export interface AuthContextType {
     user: UserData | null;
