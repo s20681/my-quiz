@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import { Highscore } from '../interfaces';
 
@@ -24,15 +24,27 @@ const HighScoresContainer = styled.div`
 
 const HighScores: React.FC = () => {
   const navigate = useNavigate();
+  const location = useLocation();
+  const [quizId, setQuizId] = useState(null);
   const [responseMessage, setResponseMessage] = useState('');
   const [highscores, setHighscores] = useState<Highscore[]>();
 
   useEffect(() => {
-    fetchQuizList();
-  }, []);
+    if (location.state) {
+      setQuizId(location.state.id)
+    }
+  }, [location.state]);
 
-  const fetchQuizList = () => {
-    fetch('http://localhost:8080/highscore/getall', {
+  useEffect(() => {
+    if (quizId) {
+      console.log("quizid ready to fetch" + quizId)
+      fetchHighscores();
+    }
+  }, [quizId]);
+
+  const fetchHighscores = () => {
+    console.log(quizId)
+    fetch(`http://localhost:8080/highscore/get?id=${quizId}`, {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json'
@@ -50,7 +62,7 @@ const HighScores: React.FC = () => {
       })
       .catch((error) => {
         console.error('Error:', error);
-        setResponseMessage('An error occurred while fetching quiz list.');
+        setResponseMessage('An error occurred while fetching highscores.');
       });
   };
 

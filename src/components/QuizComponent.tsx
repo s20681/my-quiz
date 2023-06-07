@@ -73,7 +73,7 @@ const QuizComponent: React.FC = () => {
       })
         .then((response) => {
           if (response.ok) {
-            navigate('/quiz/highscores');
+            navigate('/quiz/highscores', { state: selectedQuiz });
           } else {
             throw new Error('Error: ' + response.status);
           }

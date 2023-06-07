@@ -34,6 +34,15 @@ export interface Highscore {
   points: number;
   date: string;
 }
+
+export interface Ranking {
+  userName: string;
+  totalPoints: number;
+  totalQuizzes: number;
+  totalEasyQuizzes: number;
+  totalMediumQuizzes: number;
+  totalHardQuizzes: number;  
+}  
   
 export interface AuthContextType {
     user: UserData | null;
