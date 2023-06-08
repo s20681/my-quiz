@@ -192,7 +192,7 @@ const QuizListComponent: React.FC = () => {
                     <div>Difficulty: {quiz.difficulty}</div>
                     <div>Owner: {quiz.ownerName}</div>
                   </div>
-                  {(authContext.user?.login === quiz.ownerName || authContext.user?.login === "admin") && <button onClick={() => handleEditQuizClick(quiz.id, index)}>EDIT</button>}
+                  {(authContext.user?.login === quiz.ownerName || authContext.user?.login === "admin") && <button className="global-button" onClick={() => handleEditQuizClick(quiz.id, index)}>EDIT</button>}
 
                 </li> 
               ))}
