@@ -1,8 +1,8 @@
 import React, { useContext, useState, useEffect, useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
-import { AuthContext } from './AuthContext';
-import { Quiz } from '../interfaces';
+import { AuthContext } from '../User/AuthContext';
+import { Question, Quiz } from '../../interfaces';
 
 const QuizListContainer = styled.div`
   ul {
@@ -62,6 +62,8 @@ const QuizListComponent: React.FC = () => {
 
   const handleQuizClick = (quizId: number, index: number) => {
     if (quizzes !== undefined && quizzes[index].questions.length > 0) {
+      var quizCopy = quizzes[index]
+      quizCopy.questions = get10RandomQuestions(quizzes[index].questions);
       navigate(`/quiz/solve/${quizId}`, { state: quizzes[index] });
     } else {
       setResponseMessage("Quiz does not exist or does not have any questions yet.");
@@ -81,6 +83,10 @@ const QuizListComponent: React.FC = () => {
     navigate(`/login`);
   };
 
+  const handleManageAccount = () => {
+    navigate(`/manage`);
+  };
+
   const handleCreateNew = () => {
     navigate(`/quiz/new`);
   };
@@ -92,6 +98,14 @@ const QuizListComponent: React.FC = () => {
   const handleSortOptionChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
     setSortOption(event.target.value);
   };
+
+  function get10RandomQuestions(array : Question[]) {
+    const shuffledArray = array
+      .map((item) => ({ item, sortKey: Math.random() })) // Assign a random sort key to each item
+      .sort((a, b) => a.sortKey - b.sortKey); // Sort the items based on the sort key
+  
+    return shuffledArray.map((item) => item.item).slice(0, Math.min(10, array.length)); // Return at most 10 items
+  }  
 
   // Helper function to convert difficulty string to numeric value for sorting
   const convertDifficultyToValue = (difficulty: string) => {
@@ -138,7 +152,8 @@ const QuizListComponent: React.FC = () => {
     <div>
       {authContext.user ? (
         <div>
-          <button onClick={() => handleLogout()}> LOGOUT </button>
+          <button onClick={() => handleManageAccount()}> Manage Account </button>
+          <button onClick={() => handleLogout()}> Logout </button>
           <QuizListContainer>
             <p>Logged in as username: {authContext.user.login} Id: {authContext.user.id}</p>
             <button onClick={() => handleCreateNew()}> Create new quiz </button>
@@ -177,9 +192,9 @@ const QuizListComponent: React.FC = () => {
                     <div>Difficulty: {quiz.difficulty}</div>
                     <div>Owner: {quiz.ownerName}</div>
                   </div>
-                  {authContext.user?.login === quiz.ownerName && <button onClick={() => handleEditQuizClick(quiz.id, index)}>EDIT</button>}
+                  {(authContext.user?.login === quiz.ownerName || authContext.user?.login === "admin") && <button onClick={() => handleEditQuizClick(quiz.id, index)}>EDIT</button>}
 
-                </li>
+                </li> 
               ))}
             </ul>
           </QuizListContainer>

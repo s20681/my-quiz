@@ -1,6 +1,6 @@
 import React, { ChangeEvent, useState, useContext } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
-import { AuthContext } from './AuthContext';
+import { AuthContext } from '../User/AuthContext';
 
 interface FormState {
   name: string,

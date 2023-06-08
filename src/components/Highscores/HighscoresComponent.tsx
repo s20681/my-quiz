@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
-import { Highscore } from '../interfaces';
+import { Highscore } from '../../interfaces';
 
 const HighScoresContainer = styled.div`
   ul {

@@ -3,7 +3,6 @@ import React, { ChangeEvent, useState, useContext } from 'react';
 import { Formik, Form, Field, ErrorMessage } from 'formik';
 import { AuthContext } from './AuthContext';
 import * as Yup from 'yup';
-import styled from 'styled-components';
 import pl from 'yup-locale-pl';
 
 Yup.setLocale(pl);
@@ -32,18 +31,6 @@ const LoginComponent: React.FC = () => {
     const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
     const [responseMessage, setResponseMessage] = useState('');
     const authContext = useContext(AuthContext);
-    const [formData, setFormData] = useState({
-        login: '',
-        password: ''
-    });
-
-    const HandleChange = (event: ChangeEvent<HTMLInputElement>): void => {
-        const { name, value } = event.target;
-        setFormData(prevState => ({
-          ...prevState,
-          [name]: value,
-        }));
-      };
 
       const handleRegisterClick = () => {
         navigate('/register')
@@ -104,11 +91,11 @@ const LoginComponent: React.FC = () => {
 
                 <button type="submit" disabled={isSubmitting}>
                     {' '}
-                    Zaloguj
+                    Log in
                 </button>
 
                 <button onClick={handleRegisterClick}>
-                  Zarejestruj się
+                  Register
                 </button>
     
                   <ErrorMessage name="login" component="div" />

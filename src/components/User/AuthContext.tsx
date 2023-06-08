@@ -1,5 +1,5 @@
 import React, { createContext, useState } from 'react';
-import { AuthContextType, AuthProviderProps, UserData } from '../interfaces';
+import { AuthContextType, AuthProviderProps, UserData } from '../../interfaces';
 
 export const AuthContext = createContext<AuthContextType>({
   user: null,
@@ -11,7 +11,6 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   const [user, setUser] = useState<UserData | null>(null);
 
   const login = (userData: UserData) => {
-    console.log(userData)
     setUser(userData);
   };
 

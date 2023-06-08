@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useContext, useCallback } from 'react';
-import { AuthContext } from './AuthContext';
+import { AuthContext } from '../User/AuthContext';
 import { useLocation, useNavigate } from 'react-router-dom';
-import { Quiz } from '../interfaces';
+import { Quiz } from '../../interfaces';
 import styled from 'styled-components';
 
 const QuizContainer = styled.div`
@@ -20,14 +20,12 @@ const QuizComponent: React.FC = () => {
   const [points, setPoints] = useState<number>(0);
   const [timer, setTimer] = useState<number>(30);
 
+  // wrapped with useCallback so handleAnswer can be a dependecy of useEffect 
   const handleAnswer = useCallback(
     (selectedAnswerIndex: number | null) => {
       const currentQuestion = selectedQuiz!.questions[currentQuestionIndex];
-      console.log(currentQuestion);
-      console.log("selected answer index" + selectedAnswerIndex);
   
       if (selectedAnswerIndex !== null && currentQuestion.answers[selectedAnswerIndex].isCorrect) {
-        console.log("trying to add points!");
         setPoints((prevPoints) => prevPoints + 1);
       }
   
@@ -40,10 +38,7 @@ const QuizComponent: React.FC = () => {
   );
 
   useEffect(() => {
-    // Fetch the selected quiz data based on the quiz ID or any other identifier
-    // For simplicity, we'll set it to the first quiz in mockedData
     setSelectedQuiz(location.state);
-    console.log(location.state);
   }, [location.state]);
 
   useEffect(() => {
@@ -68,7 +63,7 @@ const QuizComponent: React.FC = () => {
 
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ userId: authContext.user?.id, quizId: selectedQuiz?.id, points: points }) // body data type must match "Content-Type" header
+        body: JSON.stringify({ userId: authContext.user?.id, quizId: selectedQuiz?.id, points: points })
 
       })
         .then((response) => {
@@ -93,7 +88,7 @@ const QuizComponent: React.FC = () => {
       <p>{selectedQuiz.description}</p>
       {currentQuestion && (
         <QuizContainer>
-          <h3>Question {currentQuestionIndex + 1}</h3>
+          <h3>Question {currentQuestionIndex + 1} / {selectedQuiz.questions.length}</h3>
           <p>{currentQuestion.content}</p>
           <p>Time remaining: {timer}s</p>
           <ul>

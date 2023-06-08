@@ -26,6 +26,9 @@ export interface Quiz {
 export interface UserData {
     login: string;
     id: string;
+    email: string;
+    isActivated: string;
+    verificationCode: string;
   }
 
 export interface Highscore {

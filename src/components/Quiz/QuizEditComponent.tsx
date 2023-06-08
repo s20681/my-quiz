@@ -1,9 +1,9 @@
 import { response } from 'express';
 import React, { useContext, useState, useEffect } from 'react';
-import { Quiz, Question, Answer } from '../interfaces';
+import { Quiz, Question, Answer } from '../../interfaces';
 import { useNavigate, useLocation } from 'react-router-dom';
 import styled from 'styled-components';
-import { AuthContext } from './AuthContext';
+import { AuthContext } from '../User/AuthContext';
 
 const QuestionListContainer = styled.div`
   ul {

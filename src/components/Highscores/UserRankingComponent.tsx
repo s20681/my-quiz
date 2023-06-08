@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
-import { Ranking } from '../interfaces';
+import { Ranking } from '../../interfaces';
 
 const UserRankingContainer = styled.div`
   ul {

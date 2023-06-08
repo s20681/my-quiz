@@ -1,6 +1,6 @@
 import React, { ChangeEvent, useState, useEffect } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
-import { Question, Answer } from '../interfaces';
+import { Question, Answer } from '../../interfaces';
 
 
 interface FormState {
