@@ -1,5 +1,5 @@
 import { useNavigate } from 'react-router-dom'
-import React, { ChangeEvent, useState, useContext, useCallback, useEffect } from 'react';
+import React, { useState, useContext, useEffect } from 'react';
 import { Formik, Form, Field, ErrorMessage } from 'formik';
 import { AuthContext } from './AuthContext';
 import * as Yup from 'yup';
@@ -112,7 +112,6 @@ const ManageAccountComponent: React.FC = () => {
     navigate('/quiz/all')
   }
 
-  // wrapping inside of useCallback to handle the event and pass the necessary values
   const handleRemoveAccount = (values: removeAccountFormData) => {
     console.log("removing account");
 
@@ -136,6 +135,35 @@ const ManageAccountComponent: React.FC = () => {
             authContext.logout();
             navigate('/login');
           }, 5000);
+        } else {
+          setResponseMessage(data.message);
+        }
+      })
+      .catch((error) => {
+        console.error('Error:', error);
+        setResponseMessage('An error occurred during the process.');
+      });
+  };
+
+  const handleRemoveAccountByAdmin = (userToRemoveID : string) => {
+    console.log("removing account by Admin");
+
+    const requestData = {
+      contextLogin: authContext.user!.login,
+      userId: userToRemoveID
+    };
+
+    fetch(`http://localhost:8080/user/administration/remove`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(requestData)
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        if (data.success === "true") {
+          fetchAllUserDetails();
         } else {
           setResponseMessage(data.message);
         }
@@ -270,15 +298,12 @@ const ManageAccountComponent: React.FC = () => {
                   <div>User: {userDetails.email}</div>
                   <div>User: {userDetails.verificationCode}</div>
                   <div>Status: {userDetails.isActivated ? "Active" : "Inactive"}</div>
-                  <button> REMOVE USER </button>
+
+                  {userDetails.login !== "admin" ? (<button onClick={() => handleRemoveAccountByAdmin(userDetails.id)}>Remove</button>) : (null) }
                 </li>
               ))}
             </div>
-
-
           )}
-
-
 
         </div>
       ) : (
