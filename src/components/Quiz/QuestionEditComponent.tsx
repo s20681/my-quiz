@@ -1,6 +1,7 @@
 import React, { ChangeEvent, useState, useEffect } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { Question, Answer } from '../../interfaces';
+import Navbar from '../Layout/NavbarComponent';
 
 
 interface FormState {
@@ -21,7 +22,7 @@ const initialData = {
     correctAnswer: ''
 }
 
-const EditQuestionForm: React.FC = () => {
+const QuestionEdit: React.FC = () => {
     const location = useLocation();
     const navigate = useNavigate();
     const [question, setSelectedQuestion] = useState<Question>()
@@ -84,12 +85,14 @@ const EditQuestionForm: React.FC = () => {
     };
 
     const handleGoBack = () => {
-        navigate(`/quiz/edit/${location.state.id}`, { state: location.state });
+        navigate(`/quiz/edit/${location.state.quizId}`, { state: {id : location.state.quizId} });
     };
 
     return (
         <div>
+            <Navbar></Navbar>
             <p>Editing question id: {question?.id}</p>
+            <p>Editing question id: {question?.quizId}</p>
             <form id="myForm" onSubmit={handleSubmit}>
                 <div>
                     <textarea id="question" name="question" value={formState.question} placeholder="Write the question here..."
@@ -122,4 +125,4 @@ const EditQuestionForm: React.FC = () => {
     );
 }
 
-export default EditQuestionForm;
+export default QuestionEdit;

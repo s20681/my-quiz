@@ -4,6 +4,7 @@ import { Quiz, Question, Answer } from '../../interfaces';
 import { useNavigate, useLocation } from 'react-router-dom';
 import styled from 'styled-components';
 import { AuthContext } from '../User/AuthContext';
+import Navbar from '../Layout/NavbarComponent';
 
 const QuestionListContainer = styled.div`
   ul {
@@ -95,50 +96,42 @@ const QuizEdit: React.FC = () => {
       });
   };
 
-  const handleGoHome = () => {
-    navigate(`/quiz/all`);
-  };
-
-  const handleLogout = () => {
-    authContext.logout();
-    navigate(`/login`);
-  };
-
   return (
     <div>
       {authContext.user ? (
-        <QuestionListContainer>
-          <p>Logged in as username: {authContext.user.login} Id: {authContext.user.id}</p>
-          <p>Currently editing quiz: {editedQuiz?.id} {editedQuiz?.name}</p>
-          <button onClick={() => handleGoHome()}> Go back to quiz list </button>
-          <button onClick={() => handleCreateNewQuestion()}> Add new question </button>
-          <button onClick={() => handleDeleteQuiz()}> Delete the quiz </button>
-          <button onClick={() => handleLogout()}> LOGOUT </button>
-          {editedQuiz?.questions?.length ? (
-            <ul>
-              {editedQuiz?.questions.map((question, index) => (
-                <li key={question.id}>
-                  <div onClick={() => handleEditQuestion(question)}
-                    style={{ cursor: 'pointer' }}
-                  >
-                    <div>Question: {question.content}</div>
-                    <div>Type: {question.questionType}</div>
-                    <div>
-                      <ul>
-                        {question.answers.map((answer: Answer) => (
-                          <li key={answer.id}>{answer.content} : {String(answer.isCorrect)}</li>
-                        ))}
-                      </ul>
+        <div>
+          <Navbar></Navbar>
+          <QuestionListContainer>
+            <p>Logged in as username: {authContext.user.login} Id: {authContext.user.id}</p>
+            <p>Currently editing quiz: {editedQuiz?.id} {editedQuiz?.name}</p>
+            <button onClick={() => handleCreateNewQuestion()}> Add new question </button>
+            <button onClick={() => handleDeleteQuiz()}> Delete the quiz </button>
+            {editedQuiz?.questions?.length ? (
+              <ul>
+                {editedQuiz?.questions.map((question, index) => (
+                  <li key={question.id}>
+                    <div onClick={() => handleEditQuestion(question)}
+                      style={{ cursor: 'pointer' }}
+                    >
+                      <div>Question: {question.content}</div>
+                      <div>Type: {question.questionType}</div>
+                      <div>
+                        <ul>
+                          {question.answers.map((answer: Answer) => (
+                            <li key={answer.id}>{answer.content} : {String(answer.isCorrect)}</li>
+                          ))}
+                        </ul>
+                      </div>
                     </div>
-                  </div>
-                  <button onClick={() => handleDeleteQuestion(question.id)}>REMOVE</button>
-                </li>
-              ))}
-            </ul>
-          ) : (
-            <p>No questions available yet.</p>
-          )}
-        </QuestionListContainer>
+                    <button onClick={() => handleDeleteQuestion(question.id)}>REMOVE</button>
+                  </li>
+                ))}
+              </ul>
+            ) : (
+              <p>No questions available yet.</p>
+            )}
+          </QuestionListContainer>
+        </div>
       ) : (
         <p>User not logged in</p>
       )}

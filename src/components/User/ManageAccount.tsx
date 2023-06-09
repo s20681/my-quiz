@@ -4,6 +4,7 @@ import { Formik, Form, Field, ErrorMessage } from 'formik';
 import { AuthContext } from './AuthContext';
 import * as Yup from 'yup';
 import { UserData } from '../../interfaces';
+import Navbar from '../Layout/NavbarComponent';
 
 interface changePasswordFormData {
   oldPassword: string,
@@ -212,6 +213,7 @@ const ManageAccountComponent: React.FC = () => {
     <div>
       {authContext.user ? (
         <div>
+          <Navbar></Navbar>
           {userData && (
             <div>
               <h3>Account details:</h3>
@@ -283,8 +285,6 @@ const ManageAccountComponent: React.FC = () => {
               <ErrorMessage name="login" component="div" />
             </Form>
           </Formik>
-
-          <button onClick={() => handleGoHome()}> Go back to quiz list </button>
 
           <hr></hr>
 

@@ -13,7 +13,7 @@ import QuizListComponent from './components/Quiz/QuizListComponent';
 import QuizEdit from './components/Quiz/QuizEditComponent';
 import QuizComponent from './components/Quiz/QuizComponent';
 import NewQuizForm from './components/Quiz/NewQuizFormComponent';
-import EditQuestionForm from './components/Quiz/EditQuestionFormComponent';
+import QuestionEdit from './components/Quiz/QuestionEditComponent';
 import NewQuestionForm from './components/Quiz/NewQuestionFormComponent';
 
 import HighScores from './components/Highscores/HighscoresComponent';
@@ -37,7 +37,7 @@ function App() {
         <Route path="/quiz/new" element={<NewQuizForm />} />
         <Route path="/quiz/edit/:quizId" element={<QuizEdit />} />
         <Route path="/question/new" element={<NewQuestionForm />} />
-        <Route path="/question/edit/:questionId" element={<EditQuestionForm />} />      
+        <Route path="/question/edit/:questionId" element={<QuestionEdit />} />      
 
         {/* <Route path="*" element={<NoPage />} /> */}
         {/* <Route path="blogs" element={<Blogs />} /> */}

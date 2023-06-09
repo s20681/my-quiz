@@ -6,6 +6,7 @@ export interface Answer {
   
 export interface Question {
     id: number;
+    quizId: number;
     content: string;
     correctAnswerIndex: number;
     questionType: string;

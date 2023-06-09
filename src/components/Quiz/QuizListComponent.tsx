@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import { AuthContext } from '../User/AuthContext';
 import { Question, Quiz } from '../../interfaces';
+import Navbar from '../Layout/NavbarComponent';
 
 const QuizListContainer = styled.div`
   ul {
@@ -78,15 +79,6 @@ const QuizListComponent: React.FC = () => {
     }
   };
 
-  const handleLogout = () => {
-    authContext.logout();
-    navigate(`/login`);
-  };
-
-  const handleManageAccount = () => {
-    navigate(`/manage`);
-  };
-
   const handleCreateNew = () => {
     navigate(`/quiz/new`);
   };
@@ -152,8 +144,7 @@ const QuizListComponent: React.FC = () => {
     <div>
       {authContext.user ? (
         <div>
-          <button onClick={() => handleManageAccount()}> Manage Account </button>
-          <button onClick={() => handleLogout()}> Logout </button>
+          <Navbar></Navbar>
           <QuizListContainer>
             <p>Logged in as username: {authContext.user.login} Id: {authContext.user.id}</p>
             <button onClick={() => handleCreateNew()}> Create new quiz </button>
