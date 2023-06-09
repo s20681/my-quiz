@@ -72,15 +72,16 @@ const QuestionEdit: React.FC = () => {
 
         console.log(formData)
 
-        // mode: 'cors', 
-        // headers: { 'Content-Type': 'application/json' },
-        // headers: { 'Content-Type': 'Question' },
         fetch('http://127.0.0.1:8080/question/update', {
 
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(formData) // body data type must match "Content-Type" header
+            body: JSON.stringify(formData)
 
+        })  .then((response) => {
+            if (response.ok) {
+              handleGoBack();
+            }
         })
     };
 
