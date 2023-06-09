@@ -94,7 +94,7 @@ const QuizComponent: React.FC = () => {
           <ul>
             {currentQuestion.answers.map((answer, index) => (
               <li key={index}>
-                <button onClick={() => handleAnswer(index)} disabled={timer === 0}>
+                <button className='regular-button' onClick={() => handleAnswer(index)} disabled={timer === 0}>
                   {answer.content}
                 </button>
               </li>

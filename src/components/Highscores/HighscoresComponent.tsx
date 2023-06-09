@@ -84,7 +84,7 @@ const HighScores: React.FC = () => {
           </li>
         ))}
       </ul>
-      <button onClick={() => handleGotoMain()}> Back to quizzes </button>
+      <button className='accent-button' onClick={() => handleGotoMain()}> Back to quizzes </button>
 
       {responseMessage && <p>{responseMessage}</p>}
     </HighScoresContainer>

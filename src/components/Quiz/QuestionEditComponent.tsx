@@ -114,12 +114,12 @@ const QuestionEdit: React.FC = () => {
                 </div>
 
                 <div>
-                    <button type="submit">Submit</button>
+                    <button className='accent-button' type="submit">Submit</button>
                 </div>
             </form>
 
             <div>
-                <button onClick={() => handleGoBack()}> Go back </button>
+                <button className='regular-button' onClick={() => handleGoBack()}> Go back </button>
             </div>
 
         </div>

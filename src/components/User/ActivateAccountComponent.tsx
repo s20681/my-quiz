@@ -9,6 +9,10 @@ const ActivateAccountComponent: React.FC = () => {
     });
     const navigate = useNavigate();
 
+    const handleGoBackClick = () => {
+      navigate('/login')
+   }
+
     const handleChange = (event: ChangeEvent<HTMLInputElement>): void => {
 
         const { name, value } = event.target;
@@ -53,7 +57,8 @@ const ActivateAccountComponent: React.FC = () => {
                 value={formData.code}
                 onChange={handleChange}
             />
-            <button type='submit'>submit</button>
+            <button className='accent-button' type='submit'>submit</button>
+            <button className='regular-button' onClick={handleGoBackClick}>go back</button>
             </form>
             {responseMessage && <p>{responseMessage}</p>}
         </div>

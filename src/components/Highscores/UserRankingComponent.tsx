@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import { Ranking } from '../../interfaces';
+import Navbar from '../Layout/NavbarComponent';
 
 const UserRankingContainer = styled.div`
   ul {
@@ -48,7 +49,7 @@ const UserRanking: React.FC = () => {
         if (data.length > 0) {
           setRanking(data);
           console.log(JSON.stringify(data))
-        } else {          
+        } else {
           setResponseMessage("Ranking list seems empty.");
         }
       })
@@ -59,23 +60,25 @@ const UserRanking: React.FC = () => {
   };
 
   return (
-    <UserRankingContainer>
-      <ul>
-        {ranking?.map((rank, index) => (
-          <li key={index}>
-            <div>User: {rank.userName}</div>
-            <div>Total points: {rank.totalPoints}</div>
-            <div>Total quizzes solved: {rank.totalQuizzes}</div>
-            <div>Easy: {rank.totalEasyQuizzes}</div>
-            <div>Medium: {rank.totalMediumQuizzes}</div>
-            <div>Hard: {rank.totalHardQuizzes}</div>
-          </li>
-        ))}
-      </ul>
-      <button onClick={() => handleGotoMain()}> Back to quizzes </button>
+    <div>
+      <Navbar></Navbar>
+      <UserRankingContainer>
+        <ul>
+          {ranking?.map((rank, index) => (
+            <li key={index}>
+              <div>User: {rank.userName}</div>
+              <div>Total points: {rank.totalPoints}</div>
+              <div>Total quizzes solved: {rank.totalQuizzes}</div>
+              <div>Easy: {rank.totalEasyQuizzes}</div>
+              <div>Medium: {rank.totalMediumQuizzes}</div>
+              <div>Hard: {rank.totalHardQuizzes}</div>
+            </li>
+          ))}
+        </ul>
 
-      {responseMessage && <p>{responseMessage}</p>}
-    </UserRankingContainer>
+        {responseMessage && <p>{responseMessage}</p>}
+      </UserRankingContainer>
+    </div>
   );
 };
 

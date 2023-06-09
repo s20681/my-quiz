@@ -1,5 +1,6 @@
 import React, { ChangeEvent, useState, useEffect } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
+import Navbar from '../Layout/NavbarComponent';
 
 interface FormState {
     question: string,
@@ -76,6 +77,7 @@ const NewQuestionForm: React.FC = () => {
 
     return (
         <div>
+            <Navbar></Navbar>
             <p>Adding question for quiz id: {quizId}</p>
             <form id="myForm" onSubmit={handleSubmit}>
                 <div>
@@ -97,12 +99,12 @@ const NewQuestionForm: React.FC = () => {
                 </div>
 
                 <div>
-                    <button type="submit">Submit</button>
+                    <button className='accent-button' type="submit">Submit</button>
                 </div>
             </form>
 
             <div>
-                <button onClick={() => handleGoBack()}> Go back </button>
+                <button className='regular-button' onClick={() => handleGoBack()}> Go back </button>
             </div>
 
         </div>

@@ -147,8 +147,8 @@ const QuizListComponent: React.FC = () => {
           <Navbar></Navbar>
           <QuizListContainer>
             <p>Logged in as username: {authContext.user.login} Id: {authContext.user.id}</p>
-            <button onClick={() => handleCreateNew()}> Create new quiz </button>
-            <button onClick={() => handleRanking()}> User ranking </button>
+            <button className='regular-button' onClick={() => handleCreateNew()}> Create new quiz </button>
+            <button className='regular-button' onClick={() => handleRanking()}> User ranking </button>
 
             <div>
               <input
@@ -166,8 +166,8 @@ const QuizListComponent: React.FC = () => {
               </select>
 
               Order:
-              <button onClick={() => setSortOrder('asc')}>Sort Ascending</button>
-              <button onClick={() => setSortOrder('desc')}>Sort Descending</button>
+              <button className='regular-button' onClick={() => setSortOrder('asc')}>Sort Ascending</button>
+              <button className='regular-button' onClick={() => setSortOrder('desc')}>Sort Descending</button>
             </div>
             <ul>
 
@@ -183,7 +183,7 @@ const QuizListComponent: React.FC = () => {
                     <div>Difficulty: {quiz.difficulty}</div>
                     <div>Owner: {quiz.ownerName}</div>
                   </div>
-                  {(authContext.user?.login === quiz.ownerName || authContext.user?.login === "admin") && <button className="global-button" onClick={() => handleEditQuizClick(quiz.id, index)}>EDIT</button>}
+                  {(authContext.user?.login === quiz.ownerName || authContext.user?.login === "admin") && <button className="accent-button" onClick={() => handleEditQuizClick(quiz.id, index)}>EDIT</button>}
 
                 </li> 
               ))}

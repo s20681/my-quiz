@@ -93,7 +93,7 @@ const RegisterComponent: React.FC = () => {
               <InputLabel htmlFor="email">E-mail: </InputLabel>
               <Field type="email" id="email" name="email" />
             </div>
-            <button type="submit" disabled={isSubmitting}>
+            <button className='regular-button' type="submit" disabled={isSubmitting}>
                 {' '}
                 Zarejestruj
               </button>

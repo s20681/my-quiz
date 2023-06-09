@@ -104,8 +104,8 @@ const QuizEdit: React.FC = () => {
           <QuestionListContainer>
             <p>Logged in as username: {authContext.user.login} Id: {authContext.user.id}</p>
             <p>Currently editing quiz: {editedQuiz?.id} {editedQuiz?.name}</p>
-            <button onClick={() => handleCreateNewQuestion()}> Add new question </button>
-            <button onClick={() => handleDeleteQuiz()}> Delete the quiz </button>
+            <button className='regular-button' onClick={() => handleCreateNewQuestion()}> Add new question </button>
+            <button className='regular-button' onClick={() => handleDeleteQuiz()}> Delete the quiz </button>
             {editedQuiz?.questions?.length ? (
               <ul>
                 {editedQuiz?.questions.map((question, index) => (
@@ -123,7 +123,7 @@ const QuizEdit: React.FC = () => {
                         </ul>
                       </div>
                     </div>
-                    <button onClick={() => handleDeleteQuestion(question.id)}>REMOVE</button>
+                    <button className='regular-button' onClick={() => handleDeleteQuestion(question.id)}>REMOVE</button>
                   </li>
                 ))}
               </ul>

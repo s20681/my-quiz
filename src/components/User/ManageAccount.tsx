@@ -246,7 +246,7 @@ const ManageAccountComponent: React.FC = () => {
                   <Field type="password" id="newPassword" name="newPassword" />
                 </div>
 
-                <button type="submit" disabled={isSubmitting}>
+                <button className='regular-button' type="submit" disabled={isSubmitting}>
                   {' '}
                   Change password
                 </button>
@@ -276,7 +276,7 @@ const ManageAccountComponent: React.FC = () => {
                 <Field type="password" id="password" name="password" autoComplete="off" />
               </div>
 
-              <button type="submit" disabled={isSubmitting}>
+              <button className='regular-button' type="submit" disabled={isSubmitting}>
                 {' '}
                 Remove account
               </button>
@@ -299,7 +299,7 @@ const ManageAccountComponent: React.FC = () => {
                   <div>User: {userDetails.verificationCode}</div>
                   <div>Status: {userDetails.isActivated ? "Active" : "Inactive"}</div>
 
-                  {userDetails.login !== "admin" ? (<button onClick={() => handleRemoveAccountByAdmin(userDetails.id)}>Remove</button>) : (null) }
+                  {userDetails.login !== "admin" ? (<button className='regular-button' onClick={() => handleRemoveAccountByAdmin(userDetails.id)}>Remove</button>) : (null) }
                 </li>
               ))}
             </div>

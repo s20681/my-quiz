@@ -1,5 +1,6 @@
 import React, { ChangeEvent, useState, useContext } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
+import Navbar from '../Layout/NavbarComponent';
 import { AuthContext } from '../User/AuthContext';
 
 interface FormState {
@@ -68,6 +69,7 @@ const NewQuizForm: React.FC = () => {
   return (
 
     <div>
+      <Navbar></Navbar>
       <form id="myForm" onSubmit={handleSubmit}>
         <div><input type="text" value={formState.name} id="name" name="name" placeholder="Enter the name of the quiz" onChange={handleChange} /></div>
 
@@ -87,12 +89,12 @@ const NewQuizForm: React.FC = () => {
         </div>
 
         <div>
-          <button type="submit">Submit</button>
+          <button className='accent-button' type="submit">Submit</button>
         </div>
       </form>
 
       <div>
-      <button onClick={() => handleGoBack()}> Cancel </button>
+      <button className='regular-button' onClick={() => handleGoBack()}> Cancel </button>
         </div>
     </div>
   );
