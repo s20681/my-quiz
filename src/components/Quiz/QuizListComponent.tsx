@@ -83,21 +83,17 @@ const QuizListComponent: React.FC = () => {
     navigate(`/quiz/new`);
   };
 
-  const handleRanking = () => {
-    navigate(`/ranking`);
-  };
-
   const handleSortOptionChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
     setSortOption(event.target.value);
   };
 
-  function get10RandomQuestions(array : Question[]) {
+  function get10RandomQuestions(array: Question[]) {
     const shuffledArray = array
       .map((item) => ({ item, sortKey: Math.random() })) // Assign a random sort key to each item
       .sort((a, b) => a.sortKey - b.sortKey); // Sort the items based on the sort key
-  
+
     return shuffledArray.map((item) => item.item).slice(0, Math.min(10, array.length)); // Return at most 10 items
-  }  
+  }
 
   // Helper function to convert difficulty string to numeric value for sorting
   const convertDifficultyToValue = (difficulty: string) => {
@@ -147,10 +143,10 @@ const QuizListComponent: React.FC = () => {
           <Navbar></Navbar>
           <QuizListContainer>
             <p>Logged in as username: {authContext.user.login} Id: {authContext.user.id}</p>
-            <button className='regular-button' onClick={() => handleCreateNew()}> Create new quiz </button>
-            <button className='regular-button' onClick={() => handleRanking()}> User ranking </button>
 
             <div>
+              <button className='addquiz-button' onClick={() => handleCreateNew()}> Create new quiz </button>
+
               <input
                 type="text"
                 value={filter}
@@ -185,7 +181,7 @@ const QuizListComponent: React.FC = () => {
                   </div>
                   {(authContext.user?.login === quiz.ownerName || authContext.user?.login === "admin") && <button className="accent-button" onClick={() => handleEditQuizClick(quiz.id, index)}>EDIT</button>}
 
-                </li> 
+                </li>
               ))}
             </ul>
           </QuizListContainer>

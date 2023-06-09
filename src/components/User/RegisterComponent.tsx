@@ -8,9 +8,9 @@ import pl from 'yup-locale-pl';
 Yup.setLocale(pl);
 
 interface FormData {
-    login: string,
-    password: string,
-    email: string
+  login: string,
+  password: string,
+  email: string
 }
 
 const InputLabel = styled.label`
@@ -18,15 +18,15 @@ const InputLabel = styled.label`
 `;
 
 const validationSchema = Yup.object().shape({
-    login: Yup.string()
+  login: Yup.string()
     .min(2, 'Login musi składać się co najmniej z 2 znaków')
     .max(15, 'Login może składać się maksymalnie z 15 znaków')
     .required('Login jest wymagany'),
-    password: Yup.string()
+  password: Yup.string()
     .min(8, 'Hasło musi składać się co najmniej z 8 znaków')
     .max(25, 'Hasło może składać się maksymalnie z 25 znaków')
     .required('Hasło jest wymagane'),
-    email: Yup.string()
+  email: Yup.string()
     .email('Niepoprawny adres e-mail')
     .required('Adres e-mail jest wymagany')
 });
@@ -42,7 +42,11 @@ const RegisterComponent: React.FC = () => {
   const [responseMessage, setResponseMessage] = useState('');
   const [formData, setformData] = useState(initialValues);
   const navigate = useNavigate();
- 
+
+  const handleGoBackClick = () => {
+    navigate('/login')
+  }
+
   const handleSubmit = (values: FormData) => {
     setIsSubmitting(true);
 
@@ -93,14 +97,13 @@ const RegisterComponent: React.FC = () => {
               <InputLabel htmlFor="email">E-mail: </InputLabel>
               <Field type="email" id="email" name="email" />
             </div>
-            <button className='regular-button' type="submit" disabled={isSubmitting}>
-                {' '}
-                Zarejestruj
-              </button>
+            <button className='regular-button' type="submit" disabled={isSubmitting}>Register</button>
 
-              <ErrorMessage name="login" component="div" />
-              <ErrorMessage name="password" component="div" />
-              <ErrorMessage name="email" component="div" />
+            <button className='regular-button' onClick={handleGoBackClick}>go back</button>
+
+            <ErrorMessage name="login" component="div" />
+            <ErrorMessage name="password" component="div" />
+            <ErrorMessage name="email" component="div" />
           </Form>
         )}
       </Formik>
