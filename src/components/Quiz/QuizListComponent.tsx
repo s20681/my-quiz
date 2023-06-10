@@ -1,28 +1,8 @@
 import React, { useContext, useState, useEffect, useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
-import styled from 'styled-components';
 import { AuthContext } from '../User/AuthContext';
 import { Question, Quiz } from '../../interfaces';
 import Navbar from '../Layout/NavbarComponent';
-
-const QuizListContainer = styled.div`
-  ul {
-    list-style: none;
-    padding: 0;
-  }
-
-  li {
-    padding: 10px;
-    margin-bottom: 10px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    cursor: pointer;
-
-    &:hover {
-      background-color: #f5f5f5;
-    }
-  }
-`;
 
 const QuizListComponent: React.FC = () => {
   const navigate = useNavigate();
@@ -143,61 +123,88 @@ const QuizListComponent: React.FC = () => {
           <Navbar></Navbar>
           <p>Logged in as username: {authContext.user.login} Id: {authContext.user.id}</p>
 
-          <QuizListContainer>
-            <div className="flex items-center space-x-4 mb-3">
-              <div className="flex items-center space-x-4">
-                {/* Filter by name */}
-                <div className="flex items-center space-x-2">
-                  <span className="text-gray-600">Filter by:</span>
-                  <input type="text"
+          <div className="flex items-center space-x-4 mb-3">
+            <div className="flex items-center space-x-4">
+              <div className="flex items-center space-x-2">
+                <span className="text-gray-600">Filter by:</span>
+                <input type="text"
                   value={filter}
                   onChange={(e) => setFilter(e.target.value)}
-                  placeholder="Filter by name or category" className="border border-gray-300 px-2 py-1 rounded-sm"/>
-                </div>
+                  placeholder="Filter by name or category" className="border border-gray-300 px-2 py-1 rounded-sm" />
+              </div>
 
-                {/* Sort by parameter dropdown menu */}
-                <div className="relative">
-                  <select value={sortOption} onChange={handleSortOptionChange} className="appearance-none border border-gray-300 px-2 py-1 rounded-sm">
+              <div className="relative">
+                <select value={sortOption} onChange={handleSortOptionChange} className="appearance-none border border-gray-300 px-2 py-1 rounded-sm">
                   <option value="id">Created</option>
                   <option value="category">Category</option>
                   <option value="difficulty">Difficulty</option>
-                  </select>
-                </div>
-
-                {/* Sort ascending and descending buttons */}
-                <div className="flex items-center space-x-2">
-                  <button onClick={() => setSortOrder('asc')} className="px-3 py-1 rounded bg-blue-500 text-white">Asc</button>
-                  <button onClick={() => setSortOrder('desc')} className="px-3 py-1 rounded bg-blue-500 text-white">Desc</button>
-                </div>
-
-                <div>
-                  <button className='px-3 py-1 rounded bg-blue-500 text-white' onClick={() => handleCreateNew()}> Create new quiz </button>
-                </div>
+                </select>
               </div>
-              
 
+              <div className="flex items-center space-x-2">
+                <button onClick={() => setSortOrder('asc')} className="px-3 py-1 rounded bg-blue-500 text-white">Asc</button>
+                <button onClick={() => setSortOrder('desc')} className="px-3 py-1 rounded bg-blue-500 text-white">Desc</button>
+              </div>
 
+              <div>
+                <button className='px-3 py-1 rounded bg-blue-500 text-white' onClick={() => handleCreateNew()}> Create new quiz </button>
+              </div>
             </div>
 
-            <ul>
-              {filteredAndSortedQuizzes?.map((quiz, index) => (
-                <li key={quiz.id}>
-                  <div
-                    onClick={() => handleQuizClick(quiz.id, index)}
-                    style={{ cursor: 'pointer' }}
-                  >
-                    <div>Name: {quiz.name}</div>
-                    <div>Category: {quiz.category}</div>
-                    <div>Description: {quiz.description}</div>
-                    <div>Difficulty: {quiz.difficulty}</div>
-                    <div>Owner: {quiz.ownerName}</div>
-                  </div>
-                  {(authContext.user?.login === quiz.ownerName || authContext.user?.login === "admin") && <button className="accent-button" onClick={() => handleEditQuizClick(quiz.id, index)}>EDIT</button>}
 
-                </li>
+            <div className="relative overflow-x-auto shadow-md sm:rounded-lg">
+            </div>
+          </div>
+
+          <table className="w-full text-sm text-left text-gray-500 dark:text-gray-400">
+            <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+              <tr>
+                <th scope="col" className="px-6 py-3">
+                  Quiz name
+                </th>
+                <th scope="col" className="px-6 py-3">
+                  Category
+                </th>
+                <th scope="col" className="px-6 py-3">
+                  Description
+                </th>
+                <th scope="col" className="px-6 py-3">
+                  Difficulty
+                </th>
+                <th scope="col" className="px-6 py-3">
+                  Owner
+                </th>
+                <th scope="col" className="px-6 py-3">
+                  Edit
+                </th>
+              </tr>
+            </thead>
+            <tbody>
+              {filteredAndSortedQuizzes?.map((quiz, index) => (
+                <tr key={quiz.id} onClick={() => handleQuizClick(quiz.id, index)} style={{ cursor: 'pointer' }} className="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
+                  <th scope="row" className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                    {quiz.name}
+                  </th>
+                  <td className="px-6 py-4">
+                    {quiz.category}
+                  </td>
+                  <td className="px-6 py-4">
+                    {quiz.description}
+                  </td>
+                  <td className="px-6 py-4">
+                    {quiz.difficulty}
+                  </td>
+                  <td className="px-6 py-4">
+                    {quiz.ownerName}
+                  </td>
+                  <td className="px-6 py-4">
+                    {(authContext.user?.login === quiz.ownerName || authContext.user?.login === "admin") && <button onClick={() => handleEditQuizClick(quiz.id, index)} className="font-medium text-blue-600 dark:text-blue-500 hover:underline">EDIT</button>}
+                  </td>
+                </tr>
+
               ))}
-            </ul>
-          </QuizListContainer>
+            </tbody>
+          </table>
         </div>
 
       ) : (
