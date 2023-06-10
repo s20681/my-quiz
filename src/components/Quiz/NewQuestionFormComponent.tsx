@@ -30,7 +30,6 @@ const NewQuestionForm: React.FC = () => {
         // Fetch the selected quiz data based on the quiz ID or any other identifier
         // For simplicity, we'll set it to the first quiz in mockedData
         setSelectedQuizID(location.state.id);
-        console.log("Creating new question for quiz :" + quizId);
     }, []);
 
     const handleChange = (event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>): void => {
@@ -43,7 +42,6 @@ const NewQuestionForm: React.FC = () => {
 
     const handleSubmit = (event: React.FormEvent) => {
         event.preventDefault();
-        console.log('Form submitted:', formState);
         const formData = {
             quizID: quizId, //TODO: add quiz id here,
             type: "SINGLE_CHOICE",
@@ -67,7 +65,6 @@ const NewQuestionForm: React.FC = () => {
             body: JSON.stringify(formData) // body data type must match "Content-Type" header
 
         })
-        console.log(formData)
         setFormState(initialData)
     };
 
@@ -88,6 +85,7 @@ const NewQuestionForm: React.FC = () => {
                                 name="question"
                                 value={formState.question}
                                 placeholder="Write the question here..."
+                                autoComplete='off'
                                 onChange={handleChange}
                                 required
                                 className="border border-gray-300 px-4 py-2 rounded w-full"
@@ -101,6 +99,7 @@ const NewQuestionForm: React.FC = () => {
                                 name="answerA"
                                 id="answerA"
                                 placeholder="Enter answer A"
+                                autoComplete='off'
                                 onChange={handleChange}
                                 required
                                 className="border border-gray-300 px-4 py-2 rounded w-full"
@@ -113,6 +112,7 @@ const NewQuestionForm: React.FC = () => {
                                 value={formState.answerB}
                                 name="answerB"
                                 placeholder="Enter answer B"
+                                autoComplete='off'
                                 onChange={handleChange}
                                 required
                                 className="border border-gray-300 px-4 py-2 rounded w-full"
@@ -125,6 +125,7 @@ const NewQuestionForm: React.FC = () => {
                                 value={formState.answerC}
                                 name="answerC"
                                 placeholder="Enter answer C"
+                                autoComplete='off'
                                 onChange={handleChange}
                                 required
                                 className="border border-gray-300 px-4 py-2 rounded w-full"
@@ -137,6 +138,7 @@ const NewQuestionForm: React.FC = () => {
                                 value={formState.answerD}
                                 name="answerD"
                                 placeholder="Enter answer D"
+                                autoComplete='off'
                                 onChange={handleChange}
                                 required
                                 className="border border-gray-300 px-4 py-2 rounded w-full"

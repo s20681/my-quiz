@@ -1,4 +1,3 @@
-import { response } from 'express';
 import React, { useContext, useState, useEffect } from 'react';
 import { Quiz, Question, Answer } from '../../interfaces';
 import { useNavigate, useLocation } from 'react-router-dom';
@@ -45,7 +44,6 @@ const QuizEdit: React.FC = () => {
       .then((data) => {
         if (data) {
           setEditedQuiz(data);
-          console.log(data)
         } else {
           setResponseMessage("quiz data empty?");
         }
@@ -71,7 +69,6 @@ const QuizEdit: React.FC = () => {
         'Content-Type': 'application/json'
       }
     }).then(() => {
-      console.log("setting questions to null")
       setQuestions([])
     })
       .catch(error => {
@@ -101,7 +98,6 @@ const QuizEdit: React.FC = () => {
         <div>
           <Navbar></Navbar>
           <QuestionListContainer>
-            <p>Logged in as username: {authContext.user.login}</p>
             <p>Editing quiz: {editedQuiz?.name}, {editedQuiz?.description}</p>
 
             <button className='accent-button' onClick={() => handleCreateNewQuestion()}> Add new question </button>
@@ -114,7 +110,7 @@ const QuizEdit: React.FC = () => {
                     onClick={() => handleEditQuestion(question)}
                     className="bg-white rounded-lg p-4 shadow-md cursor-pointer"
                   >
-                    <div className="font-bold text-center mb-2">Question: {question.content}</div>
+                    <div className="font-bold text-center mb-2">{question.content}</div>
                     <ul>
                       {question.answers.map((answer) => (
                         <li

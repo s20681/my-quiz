@@ -27,9 +27,7 @@ const QuizListComponent: React.FC = () => {
       .then(
         (response) => response.json())
       .then((data) => {
-        console.log(data);
         if (data.length > 0) {
-          // Ustawienie pobranej listy quizów w stanie komponentu
           setQuizzes(data);
         } else {
           setResponseMessage("Quiz list seems empty for now.");
@@ -121,7 +119,6 @@ const QuizListComponent: React.FC = () => {
       {authContext.user ? (
         <div>
           <Navbar></Navbar>
-          <p>Logged in as username: {authContext.user.login}</p>
 
           <div className="flex items-center space-x-4 mb-3">
             <div className="flex items-center space-x-4">

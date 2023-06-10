@@ -1,8 +1,7 @@
 import React, { ChangeEvent, useState, useEffect } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
-import { Question, Answer } from '../../interfaces';
+import { Question } from '../../interfaces';
 import Navbar from '../Layout/NavbarComponent';
-
 
 interface FormState {
     question: string,
@@ -30,18 +29,18 @@ const QuestionEdit: React.FC = () => {
 
     useEffect(() => {
         if (location.state) {
-          setSelectedQuestion(location.state as Question)
-          const { content, answers, correctAnswerIndex } = location.state as Question;
-          setFormState({
-            question: content,
-            answerA: answers[0]?.content || '',
-            answerB: answers[1]?.content || '',
-            answerC: answers[2]?.content || '',
-            answerD: answers[3]?.content || '',
-            correctAnswer: correctAnswerIndex.toString()
-          });
+            setSelectedQuestion(location.state as Question)
+            const { content, answers, correctAnswerIndex } = location.state as Question;
+            setFormState({
+                question: content,
+                answerA: answers[0]?.content || '',
+                answerB: answers[1]?.content || '',
+                answerC: answers[2]?.content || '',
+                answerD: answers[3]?.content || '',
+                correctAnswer: correctAnswerIndex.toString()
+            });
         }
-      }, [location.state]);
+    }, [location.state]);
     const handleChange = (event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>): void => {
         const { name, value } = event.target;
         setFormState(prevState => ({
@@ -70,59 +69,119 @@ const QuestionEdit: React.FC = () => {
             correctAnswerIndex: formState.correctAnswer,
         };
 
-        console.log(formData)
-
         fetch('http://127.0.0.1:8080/question/update', {
 
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(formData)
 
-        })  .then((response) => {
+        }).then((response) => {
             if (response.ok) {
-              handleGoBack();
+                handleGoBack();
             }
         })
     };
 
     const handleGoBack = () => {
-        navigate(`/quiz/edit/${location.state.quizId}`, { state: {id : location.state.quizId} });
+        navigate(`/quiz/edit/${location.state.quizId}`, { state: { id: location.state.quizId } });
     };
 
     return (
-        <div>
+        <div className="flex flex-col items-center">
             <Navbar></Navbar>
-            <p>Editing question id: {question?.id}</p>
-            <p>Editing question id: {question?.quizId}</p>
-            <form id="myForm" onSubmit={handleSubmit}>
+            <div className="w-full max-w-lg bg-white rounded-lg shadow-md p-6">
+                <form id="myForm" onSubmit={handleSubmit}>
+                    <div className="mb-4">
+                        <textarea
+                            id="question"
+                            name="question"
+                            value={formState.question}
+                            placeholder="Write the question here..."
+                            onChange={handleChange}
+                            required
+                            className="w-full p-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
+                        ></textarea>
+                    </div>
+                    <div className="mb-4">
+                        <input
+                            type="text"
+                            name="answerA"
+                            value={formState.answerA}
+                            id="answerA"
+                            placeholder="Enter answer A"
+                            onChange={handleChange}
+                            required
+                            className="w-full p-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
+                        />
+                    </div>
+                    <div className="mb-4">
+                        <input
+                            type="text"
+                            name="answerB"
+                            value={formState.answerB}
+                            placeholder="Enter answer B"
+                            onChange={handleChange}
+                            required
+                            className="w-full p-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
+                        />
+                    </div>
+                    <div className="mb-4">
+                        <input
+                            type="text"
+                            name="answerC"
+                            value={formState.answerC}
+                            placeholder="Enter answer C"
+                            onChange={handleChange}
+                            required
+                            className="w-full p-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
+                        />
+                    </div>
+                    <div className="mb-4">
+                        <input
+                            type="text"
+                            name="answerD"
+                            value={formState.answerD}
+                            placeholder="Enter answer D"
+                            onChange={handleChange}
+                            required
+                            className="w-full p-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
+                        />
+                    </div>
+                    <div className="mb-4">
+                        <select
+                            id="selectCorrectAnswer"
+                            name="correctAnswer"
+                            value={formState.correctAnswer}
+                            onChange={handleChange}
+                            required
+                            className="w-full p-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
+                        >
+                            <option value="0">A</option>
+                            <option value="1">B</option>
+                            <option value="2">C</option>
+                            <option value="3">D</option>
+                        </select>
+                    </div>
+                    <div>
+                        <button
+                            className="w-full bg-blue-500 text-white rounded-md py-2 hover:bg-blue-600"
+                            type="submit"
+                        >
+                            Submit
+                        </button>
+                    </div>
+                </form>
                 <div>
-                    <textarea id="question" name="question" value={formState.question} placeholder="Write the question here..."
-                        onChange={handleChange}></textarea>
+                    <button
+                        className="w-full bg-gray-300 text-gray-700 rounded-md py-2 mt-4 hover:bg-gray-400"
+                        onClick={() => handleGoBack()}
+                    >
+                        Go back
+                    </button>
                 </div>
-
-                <div><input type="text" name="answerA" value={formState.answerA} id="answerA" placeholder="Enter answer A" onChange={handleChange} /></div>
-                <div><input type="text" name="answerB" value={formState.answerB} placeholder="Enter answer B" onChange={handleChange} /></div>
-                <div><input type="text" name="answerC" value={formState.answerC} placeholder="Enter answer C" onChange={handleChange} /></div>
-                <div><input type="text" name="answerD" value={formState.answerD} placeholder="Enter answer D" onChange={handleChange} /></div>
-                <div>
-                    <select id="selectCorrectAnswer" name="correctAnswer" value={formState.correctAnswer} onChange={handleChange}>
-                        <option value="0">A</option>
-                        <option value="1">B</option>
-                        <option value="2">C</option>
-                        <option value="3">D</option>
-                    </select>
-                </div>
-
-                <div>
-                    <button className='accent-button' type="submit">Submit</button>
-                </div>
-            </form>
-
-            <div>
-                <button className='regular-button' onClick={() => handleGoBack()}> Go back </button>
             </div>
-
         </div>
+
     );
 }
 

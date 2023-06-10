@@ -56,7 +56,6 @@ const ManageAccountComponent: React.FC = () => {
   useEffect(() => {
     fetchUserDetails();
 
-    console.log(authContext.user?.login)
     if (authContext.user?.login === "admin") {
       fetchAllUserDetails();
     }
@@ -72,7 +71,6 @@ const ManageAccountComponent: React.FC = () => {
       .then(
         (response) => response.json())
       .then((data) => {
-        console.log(data);
         if (data) {
           setUserData(data);
         } else {
@@ -86,7 +84,6 @@ const ManageAccountComponent: React.FC = () => {
   }
 
   const fetchAllUserDetails = () => {
-    console.log("fetching data for admin")
     fetch(`http://localhost:8080/user/getall`, {
       method: 'GET',
       headers: {
@@ -96,7 +93,6 @@ const ManageAccountComponent: React.FC = () => {
       .then(
         (response) => response.json())
       .then((data) => {
-        console.log(data);
         if (data) {
           setAllUserData(data);
         } else {
@@ -109,13 +105,7 @@ const ManageAccountComponent: React.FC = () => {
       });
   }
 
-  const handleGoHome = () => {
-    navigate('/quiz/all')
-  }
-
   const handleRemoveAccount = (values: removeAccountFormData) => {
-    console.log("removing account");
-
     const requestData = {
       ...values,
       contextLogin: authContext.user!.login
@@ -146,8 +136,7 @@ const ManageAccountComponent: React.FC = () => {
       });
   };
 
-  const handleRemoveAccountByAdmin = (userToRemoveID : string) => {
-    console.log("removing account by Admin");
+  const handleRemoveAccountByAdmin = (userToRemoveID: string) => {
 
     const requestData = {
       contextLogin: authContext.user!.login,
@@ -214,94 +203,173 @@ const ManageAccountComponent: React.FC = () => {
       {authContext.user ? (
         <div>
           <Navbar></Navbar>
-          {userData && (
-            <div>
-              <h3>Account details:</h3>
-              <div>ID: {userData.id}</div>
-              <div>Login: {userData.login}</div>
-              <div>Email: {userData.email}</div>
-              <div>Status: {userData.isActivated ? "Active" : "Inactive"}</div>
+
+          <div className="flex justify-center">
+            <div className="max-w-lg">
+              {userData && (
+                <div className="bg-white rounded-lg shadow-lg p-6 mb-8">
+                  <h3 className="text-center">Account details:</h3>
+                  <div>ID: {userData.id}</div>
+                  <div>Login: {userData.login}</div>
+                  <div>Email: {userData.email}</div>
+                  <div>Status: {userData.isActivated ? "Active" : "Inactive"}</div>
+                </div>
+              )}
+
+              <Formik
+                initialValues={changePasswordFormData}
+                validationSchema={passwordChangeValidationSchema}
+                onSubmit={handleSubmitPasswordChange}
+              >
+                {({ errors, touched }) => (
+                  <Form className="bg-white rounded-lg shadow-lg p-6 mb-8">
+                    <div className="mb-4">
+                      <label htmlFor="oldPassword">Old password:</label>
+                      <Field
+                        type="password"
+                        id="oldPassword"
+                        name="oldPassword"
+                        className="block w-full border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500"
+                      />
+                      <ErrorMessage name="oldPassword" component="div" className="text-red-500" />
+                    </div>
+
+                    <div className="mb-4">
+                      <label htmlFor="newPassword">New password:</label>
+                      <Field
+                        type="password"
+                        id="newPassword"
+                        name="newPassword"
+                        className="block w-full border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500"
+                      />
+                      <ErrorMessage name="newPassword" component="div" className="text-red-500" />
+                    </div>
+
+                    <button type="submit" className="accent-button" disabled={isSubmitting}>
+                      Change password
+                    </button>
+                  </Form>
+                )}
+              </Formik>
+
+              <Formik
+                initialValues={removeAccountFormData}
+                validationSchema={removeAccountValidationSchema}
+                onSubmit={handleRemoveAccount}
+              >
+                <Form className="bg-white rounded-lg shadow-lg p-6 mb-8">
+                  <div className="mb-4">If you want to permanently delete your account, input your login/password below and press the button.</div>
+
+                  <div className="mb-4">
+                    <label htmlFor="login">Login:</label>
+                    <Field
+                      type="text"
+                      id="login"
+                      name="login"
+                      className="block w-full border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500"
+                      autoComplete="off"
+                    />
+                    <ErrorMessage name="login" component="div" className="text-red-500" />
+                  </div>
+
+                  <div className="mb-4">
+                    <label htmlFor="password">Password:</label>
+                    <Field
+                      type="password"
+                      id="password"
+                      name="password"
+                      className="block w-full border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500"
+                      autoComplete="off"
+                    />
+                    <ErrorMessage name="password" component="div" className="text-red-500" />
+                  </div>
+
+                  <button type="submit" className="accent-button" disabled={isSubmitting}>
+                    Remove account
+                  </button>
+                </Form>
+              </Formik>
             </div>
-          )}
-
-          <hr></hr>
-
-          <Formik
-            initialValues={changePasswordFormData}
-            validationSchema={passwordChangeValidationSchema}
-            onSubmit={handleSubmitPasswordChange}
-          >
-            {({ errors, touched }) => (
-              <Form autoComplete="off">
-                <div>
-                  <div></div>
-                </div>
-                <div>
-                  <label htmlFor="oldPassword">Old password: </label>
-                  <Field type="password" id="oldPassword" name="oldPassword" />
-                </div>
-
-                <div>
-                  <label htmlFor="newPassword">New password: </label>
-                  <Field type="password" id="newPassword" name="newPassword" />
-                </div>
-
-                <button className='regular-button' type="submit" disabled={isSubmitting}>
-                  {' '}
-                  Change password
-                </button>
-
-                <ErrorMessage name="oldPassword" component="div" />
-                <ErrorMessage name="newPassword" component="div" />
-              </Form>
-            )}
-          </Formik>
-
-          <hr></hr>
-
-          <Formik
-            initialValues={removeAccountFormData}
-            validationSchema={removeAccountValidationSchema}
-            onSubmit={handleRemoveAccount}
-          >
-            <Form autoComplete="off">
-              <div>If you want to permanently delete your account input your login / password below and press the button.</div>
-              <div>
-                <label htmlFor="login">Login: </label>
-                <Field type="text" id="login" name="login" autoComplete="off" />
-              </div>
-
-              <div>
-                <label htmlFor="password">Hasło: </label>
-                <Field type="password" id="password" name="password" autoComplete="off" />
-              </div>
-
-              <button className='regular-button' type="submit" disabled={isSubmitting}>
-                {' '}
-                Remove account
-              </button>
-
-              <ErrorMessage name="password" component="div" />
-              <ErrorMessage name="login" component="div" />
-            </Form>
-          </Formik>
-
-          <hr></hr>
+          </div>
 
           {allUserData && (
             <div>
-              <h3>All existing accounts details:</h3>
-              {allUserData?.map((userDetails, index) => (
-                <li key={index}>
-                  <div>ID: {userDetails.id}</div>
-                  <div>User: {userDetails.login}</div>
-                  <div>User: {userDetails.email}</div>
-                  <div>User: {userDetails.verificationCode}</div>
-                  <div>Status: {userDetails.isActivated ? "Active" : "Inactive"}</div>
+              <table className="w-full text-sm text-left text-gray-500 dark:text-gray-400">
+                <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+                  <tr>
+                    <th scope="col" className="px-6 py-3">
+                      ID
+                    </th>
+                    <th scope="col" className="px-6 py-3">
+                      User
+                    </th>
+                    <th scope="col" className="px-6 py-3">
+                      Email
+                    </th>
+                    <th scope="col" className="px-6 py-3">
+                      Verification Code
+                    </th>
+                    <th scope="col" className="px-6 py-3">
+                      Status
+                    </th>
+                    <th scope="col" className="px-6 py-3">
+                      Remove
+                    </th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {allUserData?.map((userDetails, index) => (
+                    <tr
+                      key={index}
+                      className="bg-white border-b dark:bg-gray-800 dark:border-gray-700"
+                    >
+                      <th scope="row" className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                        {userDetails.id}
+                      </th>
+                      <td className="px-6 py-4">
+                        {userDetails.login}
+                      </td>
+                      <td className="px-6 py-4">
+                        {userDetails.email}
+                      </td>
+                      <td className="px-6 py-4">
+                        {userDetails.verificationCode}
+                      </td>
+                      <td className="px-6 py-4">
+                        {userDetails.isActivated ? "Active" : "Inactive"}
+                      </td>
+                      <td className="px-6 py-4">
+                        {(userDetails.login !== "admin") && (
+                          <button
+                            onClick={(event) => {
+                              event.stopPropagation(); // Stop event propagation
+                              handleRemoveAccountByAdmin(userDetails.id);
+                            }}
+                            className="font-medium text-blue-600 dark:text-blue-500 hover:underline"
+                          >
+                            Delete account
+                          </button>
+                        )}
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
 
-                  {userDetails.login !== "admin" ? (<button className='regular-button' onClick={() => handleRemoveAccountByAdmin(userDetails.id)}>Remove</button>) : (null) }
-                </li>
-              ))}
+              {/* <div>
+                <h3>All existing accounts details:</h3>
+                {allUserData?.map((userDetails, index) => (
+                  <li key={index}>
+                    <div>ID: {userDetails.id}</div>
+                    <div>User: {userDetails.login}</div>
+                    <div>Email: {userDetails.email}</div>
+                    <div>Verificationcode: {userDetails.verificationCode}</div>
+                    <div>Status: {userDetails.isActivated ? "Active" : "Inactive"}</div>
+
+                    {userDetails.login !== "admin" ? (<button className='regular-button' onClick={() => handleRemoveAccountByAdmin(userDetails.id)}>Remove</button>) : (null)}
+                  </li>
+                ))}
+              </div> */}
             </div>
           )}
 

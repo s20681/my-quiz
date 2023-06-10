@@ -25,7 +25,6 @@ const NewQuizForm: React.FC = () => {
 
   const handleSubmit = (event: React.FormEvent) => {
     event.preventDefault();
-    console.log('Form submitted:', formState);
     const formData = {
       name: formState.name,
       description: formState.description,
@@ -47,13 +46,11 @@ const NewQuizForm: React.FC = () => {
       .then((response) => response.json())
       .then((data) => {
         if (data) {
-          console.log("new quiz:" + data);
           navigate('/quiz/all');
         }
       }).catch((error) => {
         console.error('Error:', error);
       });
-    console.log(formData)
   };
 
   const handleGoBack = () => {

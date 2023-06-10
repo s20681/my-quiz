@@ -57,7 +57,6 @@ const QuizComponent: React.FC = () => {
   useEffect(() => {
     if (selectedQuiz !== null && currentQuestionIndex >= selectedQuiz!.questions.length) {
       alert(`Quiz completed! You scored ${points} points.`);
-      console.log({ userId: authContext.user?.id, quizId: selectedQuiz?.id, points: points })
 
       fetch('http://127.0.0.1:8080/highscore/add', {
 
