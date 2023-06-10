@@ -107,7 +107,7 @@ const QuizListComponent: React.FC = () => {
         } else if (sortOption === 'category') {
           return a.category.localeCompare(b.category) * compareValue(sortOrder);
         } else if (sortOption === 'difficulty') {
-          return a.difficulty.localeCompare(b.difficulty) * compareValue(sortOrder);
+          return (convertDifficultyToValue(b.difficulty) - (convertDifficultyToValue(a.difficulty))) * compareValue(sortOrder);
         } else {
           return 0;
         }
@@ -119,6 +119,8 @@ const QuizListComponent: React.FC = () => {
       {authContext.user ? (
         <div>
           <Navbar></Navbar>
+
+          <p> Logged in as {authContext.user.login} </p>
 
           <div className="flex items-center space-x-4 mb-3">
             <div className="flex items-center space-x-4">

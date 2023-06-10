@@ -39,8 +39,6 @@ function App() {
         <Route path="/question/new" element={<NewQuestionForm />} />
         <Route path="/question/edit/:questionId" element={<QuestionEdit />} />      
 
-        {/* <Route path="*" element={<NoPage />} /> */}
-        {/* <Route path="blogs" element={<Blogs />} /> */}
       </Routes>
     </BrowserRouter>
     </AuthProvider>

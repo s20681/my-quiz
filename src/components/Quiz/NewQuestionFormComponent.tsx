@@ -27,8 +27,6 @@ const NewQuestionForm: React.FC = () => {
     const [formState, setFormState] = useState<FormState>(initialData);
 
     useEffect(() => {
-        // Fetch the selected quiz data based on the quiz ID or any other identifier
-        // For simplicity, we'll set it to the first quiz in mockedData
         setSelectedQuizID(location.state.id);
     }, []);
 
@@ -43,7 +41,7 @@ const NewQuestionForm: React.FC = () => {
     const handleSubmit = (event: React.FormEvent) => {
         event.preventDefault();
         const formData = {
-            quizID: quizId, //TODO: add quiz id here,
+            quizID: quizId,
             type: "SINGLE_CHOICE",
             content: formState.question,
             answers: [
@@ -55,15 +53,11 @@ const NewQuestionForm: React.FC = () => {
             correctAnswerIndex: formState.correctAnswer,
         };
 
-        // mode: 'cors', 
-        // headers: { 'Content-Type': 'application/json' },
-        // headers: { 'Content-Type': 'Question' },
         fetch('http://127.0.0.1:8080/question/new', {
 
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(formData) // body data type must match "Content-Type" header
-
+            body: JSON.stringify(formData)
         })
         setFormState(initialData)
     };

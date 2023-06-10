@@ -30,17 +30,14 @@ const NewQuizForm: React.FC = () => {
       description: formState.description,
       category: formState.category,
       difficulty: formState.difficulty,
-      owner: authContext?.user?.login // TODO: change to current user name
+      owner: authContext?.user?.login
     };
 
-    // mode: 'cors', 
-    // headers: { 'Content-Type': 'application/json' },
-    // headers: { 'Content-Type': 'Question' },
     fetch('http://127.0.0.1:8080/quiz/new', {
 
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(formData) // body data type must match "Content-Type" header
+      body: JSON.stringify(formData)
 
     })
       .then((response) => response.json())

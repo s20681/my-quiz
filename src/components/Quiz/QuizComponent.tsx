@@ -2,14 +2,6 @@ import React, { useState, useEffect, useContext, useCallback } from 'react';
 import { AuthContext } from '../User/AuthContext';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { Quiz } from '../../interfaces';
-import styled from 'styled-components';
-
-const QuizContainer = styled.div`
-  padding: 20px;
-  border: 1px solid #ccc;
-  border-radius: 5px;
-  margin-bottom: 10px;
-`;
 
 const QuizComponent: React.FC = () => {
   const location = useLocation();
