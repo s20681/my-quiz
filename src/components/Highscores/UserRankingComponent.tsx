@@ -1,36 +1,10 @@
 import React, { useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import styled from 'styled-components';
 import { Ranking } from '../../interfaces';
 import Navbar from '../Layout/NavbarComponent';
 
-const UserRankingContainer = styled.div`
-  ul {
-    list-style: none;
-    padding: 0;
-  }
-
-  li {
-    padding: 10px;
-    margin-bottom: 10px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    cursor: pointer;
-
-    &:hover {
-      background-color: #f5f5f5;
-    }
-  }
-`;
-
 const UserRanking: React.FC = () => {
-  const navigate = useNavigate();
   const [ranking, setRanking] = useState<Ranking[]>();
   const [responseMessage, setResponseMessage] = useState('');
-
-  const handleGotoMain = () => {
-    navigate(`/quiz/all`);
-  };
 
   useEffect(() => {
     fetchHighscores();
@@ -47,7 +21,10 @@ const UserRanking: React.FC = () => {
         (response) => response.json())
       .then((data) => {
         if (data.length > 0) {
-          setRanking(data);
+          let dataSorted = data.sort((a : Ranking, b : Ranking) => {    
+            return (b.totalPoints - a.totalPoints);
+        });
+          setRanking(dataSorted);
           console.log(JSON.stringify(data))
         } else {
           setResponseMessage("Ranking list seems empty.");
@@ -62,22 +39,62 @@ const UserRanking: React.FC = () => {
   return (
     <div>
       <Navbar></Navbar>
-      <UserRankingContainer>
+      <div>
         <ul>
-          {ranking?.map((rank, index) => (
-            <li key={index}>
-              <div>User: {rank.userName}</div>
-              <div>Total points: {rank.totalPoints}</div>
-              <div>Total quizzes solved: {rank.totalQuizzes}</div>
-              <div>Easy: {rank.totalEasyQuizzes}</div>
-              <div>Medium: {rank.totalMediumQuizzes}</div>
-              <div>Hard: {rank.totalHardQuizzes}</div>
-            </li>
-          ))}
+
+        <table className="w-full text-sm text-left text-gray-500 dark:text-gray-400">
+            <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+              <tr>
+                <th scope="col" className="px-6 py-3">
+                  Username
+                </th>
+                <th scope="col" className="px-6 py-3">
+                  Total points
+                </th>
+                <th scope="col" className="px-6 py-3">
+                  Total quizzes solved
+                </th>
+                <th scope="col" className="px-6 py-3">
+                  Easy
+                </th>
+                <th scope="col" className="px-6 py-3">
+                  Medium
+                </th>
+                <th scope="col" className="px-6 py-3">
+                  Hard
+                </th>
+              </tr>
+            </thead>
+            <tbody>
+            {ranking?.map((rank, index) => (
+                <tr key={index} className="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
+                  <th scope="row" className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                    {rank.userName}
+                  </th>
+                  <td className="px-6 py-4">
+                  {rank.totalPoints}
+                  </td>
+                  <td className="px-6 py-4">
+                  {rank.totalQuizzes}
+                  </td>
+                  <td className="px-6 py-4">
+                  {rank.totalEasyQuizzes}
+                  </td>
+                  <td className="px-6 py-4">
+                  {rank.totalMediumQuizzes}
+                  </td>
+                  <td className="px-6 py-4">
+                  {rank.totalHardQuizzes}
+                  </td>
+                </tr>
+
+              ))}
+            </tbody>
+          </table>
         </ul>
 
         {responseMessage && <p>{responseMessage}</p>}
-      </UserRankingContainer>
+      </div>
     </div>
   );
 };

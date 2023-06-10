@@ -34,7 +34,7 @@ export interface UserData {
 
 export interface Highscore {
   id: string;
-  person: UserData;
+  userName: string;
   quiz: Quiz;
   points: number;
   date: string;

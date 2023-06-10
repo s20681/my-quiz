@@ -80,7 +80,7 @@ const HighScores: React.FC = () => {
           <li key={score.id}>
             <div>Points: {score.points}</div>
             <div>Time: {new Date(score.date).toLocaleString()}</div>
-            <div>User: {score.person?.login || 'Unknown'}</div>
+            <div>User: {score.userName || 'Unknown'}</div>
           </li>
         ))}
       </ul>

@@ -24,11 +24,11 @@ const QuizComponent: React.FC = () => {
   const handleAnswer = useCallback(
     (selectedAnswerIndex: number | null) => {
       const currentQuestion = selectedQuiz!.questions[currentQuestionIndex];
-  
+
       if (selectedAnswerIndex !== null && currentQuestion.answers[selectedAnswerIndex].isCorrect) {
         setPoints((prevPoints) => prevPoints + 1);
       }
-  
+
       if (currentQuestionIndex + 1 <= selectedQuiz!.questions.length) {
         setCurrentQuestionIndex((prevIndex) => prevIndex + 1);
         setTimer(30); // Reset timer for the next question
@@ -55,7 +55,7 @@ const QuizComponent: React.FC = () => {
   }, [timer, handleAnswer]);
 
   useEffect(() => {
-    if (selectedQuiz !== null && currentQuestionIndex >= selectedQuiz!.questions.length ) {
+    if (selectedQuiz !== null && currentQuestionIndex >= selectedQuiz!.questions.length) {
       alert(`Quiz completed! You scored ${points} points.`);
       console.log({ userId: authContext.user?.id, quizId: selectedQuiz?.id, points: points })
 
@@ -84,24 +84,28 @@ const QuizComponent: React.FC = () => {
 
   return (
     <div>
-      <h2>{selectedQuiz.name}</h2>
+      <p className="text-gray-600 mb-4">{selectedQuiz.name}</p>
       <p>{selectedQuiz.description}</p>
+
       {currentQuestion && (
-        <QuizContainer>
-          <h3>Question {currentQuestionIndex + 1} / {selectedQuiz.questions.length}</h3>
-          <p>{currentQuestion.content}</p>
-          <p>Time remaining: {timer}s</p>
-          <ul>
-            {currentQuestion.answers.map((answer, index) => (
-              <li key={index}>
-                <button className='regular-button' onClick={() => handleAnswer(index)} disabled={timer === 0}>
+      <div className="flex items-center justify-center h-screen">
+        <div className="bg-white rounded-lg p-8 shadow-lg min-w-[50%]">
+          <p className="text-gray-600 mb-4">Question {currentQuestionIndex + 1} / {selectedQuiz.questions.length}</p>
+          <h2 className="text-2xl mb-4">{currentQuestion.content}</h2>
+          <p className="text-gray-600 mb-4">Time remaining: {timer}s</p>
+          <div className="flex flex-col space-y-4">
+          {currentQuestion.answers.map((answer, index) => (
+              <div key={index}>
+                <button onClick={() => handleAnswer(index)} disabled={timer === 0} className="bg-blue-500 text-white py-2 px-4 rounded w-full">
                   {answer.content}
                 </button>
-              </li>
+              </div>
             ))}
-          </ul>
-        </QuizContainer>
-      )}
+          </div>
+        </div>
+      </div>
+
+)}
     </div>
   );
 };

@@ -93,7 +93,7 @@ const QuizListComponent: React.FC = () => {
   const filteredAndSortedQuizzes = useMemo(() => {
     return quizzes
       ?.filter((quiz) =>
-        quiz.name.toLowerCase().includes(filter.toLowerCase()) || quiz.category.toLowerCase().includes(filter.toLowerCase())
+        quiz.name.toLowerCase().includes(filter.toLowerCase()) || quiz.category.toLowerCase().includes(filter.toLowerCase()) || quiz.ownerName.toLowerCase().includes(filter.toLowerCase())
       )
       .sort((a, b) => {
         const compareValue = (order: 'asc' | 'desc') => {
@@ -130,7 +130,7 @@ const QuizListComponent: React.FC = () => {
                 <input type="text"
                   value={filter}
                   onChange={(e) => setFilter(e.target.value)}
-                  placeholder="Filter by name or category" className="border border-gray-300 px-2 py-1 rounded-sm" />
+                  placeholder="Filter by name, user or category" className="border border-gray-300 px-2 py-1 rounded-sm" />
               </div>
 
               <div className="relative">
