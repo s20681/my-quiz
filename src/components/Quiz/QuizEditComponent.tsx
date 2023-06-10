@@ -61,7 +61,6 @@ const QuizEdit: React.FC = () => {
   };
 
   const handleCreateNewQuestion = () => {
-    //navigate to new question view
     navigate(`/question/new`, { state: editedQuiz });
   };
 
@@ -103,6 +102,8 @@ const QuizEdit: React.FC = () => {
           <Navbar></Navbar>
           <QuestionListContainer>
             <p>Logged in as username: {authContext.user.login}</p>
+            <p>Editing quiz: {editedQuiz?.name}, {editedQuiz?.description}</p>
+
             <button className='accent-button' onClick={() => handleCreateNewQuestion()}> Add new question </button>
             <button className='regular-button' onClick={() => handleDeleteQuiz()}> Delete the quiz </button>
             {editedQuiz?.questions?.length ? (
