@@ -141,32 +141,45 @@ const QuizListComponent: React.FC = () => {
       {authContext.user ? (
         <div>
           <Navbar></Navbar>
+          <p>Logged in as username: {authContext.user.login} Id: {authContext.user.id}</p>
+
           <QuizListContainer>
-            <p>Logged in as username: {authContext.user.login} Id: {authContext.user.id}</p>
+            <div className="flex items-center space-x-4 mb-3">
+              <div className="flex items-center space-x-4">
+                {/* Filter by name */}
+                <div className="flex items-center space-x-2">
+                  <span className="text-gray-600">Filter by:</span>
+                  <input type="text"
+                  value={filter}
+                  onChange={(e) => setFilter(e.target.value)}
+                  placeholder="Filter by name or category" className="border border-gray-300 px-2 py-1 rounded-sm"/>
+                </div>
 
-            <div>
-              <button className='addquiz-button' onClick={() => handleCreateNew()}> Create new quiz </button>
+                {/* Sort by parameter dropdown menu */}
+                <div className="relative">
+                  <select value={sortOption} onChange={handleSortOptionChange} className="appearance-none border border-gray-300 px-2 py-1 rounded-sm">
+                  <option value="id">Created</option>
+                  <option value="category">Category</option>
+                  <option value="difficulty">Difficulty</option>
+                  </select>
+                </div>
 
-              <input
-                type="text"
-                value={filter}
-                onChange={(e) => setFilter(e.target.value)}
-                placeholder="Filter by name or category"
-              />
+                {/* Sort ascending and descending buttons */}
+                <div className="flex items-center space-x-2">
+                  <button onClick={() => setSortOrder('asc')} className="px-3 py-1 rounded bg-blue-500 text-white">Asc</button>
+                  <button onClick={() => setSortOrder('desc')} className="px-3 py-1 rounded bg-blue-500 text-white">Desc</button>
+                </div>
 
-              Sort by:
-              <select value={sortOption} onChange={handleSortOptionChange}>
-                <option value="id">Created</option>
-                <option value="category">Category</option>
-                <option value="difficulty">Difficulty</option>
-              </select>
+                <div>
+                  <button className='px-3 py-1 rounded bg-blue-500 text-white' onClick={() => handleCreateNew()}> Create new quiz </button>
+                </div>
+              </div>
+              
 
-              Order:
-              <button className='regular-button' onClick={() => setSortOrder('asc')}>Sort Ascending</button>
-              <button className='regular-button' onClick={() => setSortOrder('desc')}>Sort Descending</button>
+
             </div>
-            <ul>
 
+            <ul>
               {filteredAndSortedQuizzes?.map((quiz, index) => (
                 <li key={quiz.id}>
                   <div

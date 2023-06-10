@@ -123,14 +123,12 @@ const LoginComponent: React.FC = () => {
                 Need to activate account? {" "}
                 <button onClick={handleActivateClick} className="font-semibold leading-6 text-indigo-600 hover:text-indigo-500"> Activate </button>
               </p>
-            </div>
 
+              {responseMessage && <p>{responseMessage}</p>}
+            </div>
           </div>
         )}
       </Formik>
-
-
-      {responseMessage && <p>{responseMessage}</p>}
     </div>
   );
 }

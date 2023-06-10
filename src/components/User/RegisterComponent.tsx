@@ -121,15 +121,16 @@ const RegisterComponent: React.FC = () => {
                   <button type="submit" disabled={isSubmitting} className="flex w-full justify-center rounded-md bg-indigo-600 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">Register</button>
                 </div>
 
-                <ErrorMessage name="login" component="div" />
-                <ErrorMessage name="password" component="div" />
-                <ErrorMessage name="email" component="div" />
               </Form>
 
               <p className="mt-10 text-center text-sm text-gray-500">
                 Aleady registered? {" "}
                 <button onClick={handleGoBackClick} className="font-semibold leading-6 text-indigo-600 hover:text-indigo-500"> go back </button>
               </p>
+
+              <ErrorMessage className="mt-10" name="login" component="div" />
+              <ErrorMessage className="mt-10" name="password" component="div" />
+              <ErrorMessage className="mt-10" name="email" component="div" />
             </div>
           </div>
         )}
