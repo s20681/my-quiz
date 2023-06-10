@@ -1,25 +1,19 @@
 import React, { ChangeEvent, useState, useContext } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
+import { NewQuizFormState } from '../../interfaces';
 import Navbar from '../Layout/NavbarComponent';
 import { AuthContext } from '../User/AuthContext';
-
-interface FormState {
-  name: string,
-  description: string,//Few words about the quiz
-  category: string,   // Animals, History etc. if user inputs a non existent category name it will create one
-  difficulty: string, // high, medium, low
-}
 
 const NewQuizForm: React.FC = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const authContext = useContext(AuthContext);
-  const [formState, setFormState] = useState<FormState>({
+  const [formState, setFormState] = useState<NewQuizFormState>({
     name: '',
     description: '',
     category: '',
     difficulty: 'LOW'
-  });  
+  });
 
   const handleChange = (event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>): void => {
     const { name, value } = event.target;
@@ -67,36 +61,76 @@ const NewQuizForm: React.FC = () => {
   };
 
   return (
-
     <div>
-      <Navbar></Navbar>
-      <form id="myForm" onSubmit={handleSubmit}>
-        <div><input type="text" value={formState.name} id="name" name="name" placeholder="Enter the name of the quiz" onChange={handleChange} /></div>
+      <Navbar />
+      <div className="flex flex-col items-center">
+        <div className="max-w-md bg-white rounded-lg p-8 shadow-lg mt-8 min-w-[50%]">
+          <form id="myForm" onSubmit={handleSubmit}>
+            <div className="mb-4">
+              <input
+                type="text"
+                value={formState.name}
+                id="name"
+                name="name"
+                placeholder="Enter the name of the quiz"
+                onChange={handleChange}
+                required
+                className="border border-gray-300 px-4 py-2 rounded w-full"
+              />
+            </div>
 
-        <div>
-          <textarea id="quizName" name="description" value={formState.description} placeholder="Write brief quiz description here..."
-            onChange={handleChange}></textarea>
+            <div className="mb-4">
+              <textarea
+                id="quizName"
+                name="description"
+                value={formState.description}
+                placeholder="Write brief quiz description here..."
+                onChange={handleChange}
+                required
+                className="border border-gray-300 px-4 py-2 rounded w-full"
+              ></textarea>
+            </div>
+
+            <div className="mb-4">
+              <input
+                type="text"
+                value={formState.category}
+                name="category"
+                id="category"
+                placeholder="Enter quiz category name"
+                onChange={handleChange}
+                required
+                className="border border-gray-300 px-4 py-2 rounded w-full"
+              />
+            </div>
+
+            <div className="mb-4">
+              <select
+                id="difficulty"
+                name="difficulty"
+                value={formState.difficulty}
+                onChange={handleChange}
+                required
+                className="border border-gray-300 px-4 py-2 rounded w-full"
+              >
+                <option value="HIGH">High</option>
+                <option value="MEDIUM">Medium</option>
+                <option value="LOW">Low</option>
+              </select>
+            </div>
+
+            <div className="mb-4">
+              <button className="accent-button w-full" type="submit">Submit</button>
+            </div>
+          </form>
+
+          <div className="mb-4">
+            <button className="regular-button w-full" onClick={() => handleGoBack()}>Cancel</button>
+          </div>
         </div>
-
-        <div><input type="text" value={formState.category} name="category" id="category" placeholder="Enter quiz category name" onChange={handleChange} /></div>
-
-        <div>
-          <select id="difficulty" name="difficulty" value={formState.difficulty} onChange={handleChange}>
-            <option value="HIGH">High</option>
-            <option value="MEDIUM">Medium</option>
-            <option value="LOW">Low</option>
-          </select>
-        </div>
-
-        <div>
-          <button className='accent-button' type="submit">Submit</button>
-        </div>
-      </form>
-
-      <div>
-      <button className='regular-button' onClick={() => handleGoBack()}> Cancel </button>
-        </div>
+      </div>
     </div>
+
   );
 }
 

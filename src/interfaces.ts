@@ -48,6 +48,13 @@ export interface Ranking {
   totalMediumQuizzes: number;
   totalHardQuizzes: number;  
 }
+
+export interface NewQuizFormState {
+  name: string,
+  description: string, //Few words about the quiz
+  category: string,   // Animals, History etc. if user inputs a non existent category name it will create one
+  difficulty: string, // high, medium, low
+}
   
 export interface AuthContextType {
     user: UserData | null;
