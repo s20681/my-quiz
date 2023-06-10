@@ -121,7 +121,7 @@ const QuizListComponent: React.FC = () => {
       {authContext.user ? (
         <div>
           <Navbar></Navbar>
-          <p>Logged in as username: {authContext.user.login} Id: {authContext.user.id}</p>
+          <p>Logged in as username: {authContext.user.login}</p>
 
           <div className="flex items-center space-x-4 mb-3">
             <div className="flex items-center space-x-4">

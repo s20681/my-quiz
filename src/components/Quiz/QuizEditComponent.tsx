@@ -102,31 +102,39 @@ const QuizEdit: React.FC = () => {
         <div>
           <Navbar></Navbar>
           <QuestionListContainer>
-            <p>Logged in as username: {authContext.user.login} Id: {authContext.user.id}</p>
-            <p>Currently editing quiz: {editedQuiz?.id} {editedQuiz?.name}</p>
-            <button className='regular-button' onClick={() => handleCreateNewQuestion()}> Add new question </button>
+            <p>Logged in as username: {authContext.user.login}</p>
+            <button className='accent-button' onClick={() => handleCreateNewQuestion()}> Add new question </button>
             <button className='regular-button' onClick={() => handleDeleteQuiz()}> Delete the quiz </button>
             {editedQuiz?.questions?.length ? (
-              <ul>
-                {editedQuiz?.questions.map((question, index) => (
-                  <li key={question.id}>
-                    <div onClick={() => handleEditQuestion(question)}
-                      style={{ cursor: 'pointer' }}
-                    >
-                      <div>Question: {question.content}</div>
-                      <div>Type: {question.questionType}</div>
-                      <div>
-                        <ul>
-                          {question.answers.map((answer: Answer) => (
-                            <li key={answer.id}>{answer.content} : {String(answer.isCorrect)}</li>
-                          ))}
-                        </ul>
-                      </div>
-                    </div>
-                    <button className='regular-button' onClick={() => handleDeleteQuestion(question.id)}>REMOVE</button>
-                  </li>
-                ))}
-              </ul>
+              <ul className="space-y-4">
+              {editedQuiz?.questions.map((question, index) => (
+                <li key={question.id}>
+                  <div
+                    onClick={() => handleEditQuestion(question)}
+                    className="bg-white rounded-lg p-4 shadow-md cursor-pointer"
+                  >
+                    <div className="font-bold text-center mb-2">Question: {question.content}</div>
+                    <ul>
+                      {question.answers.map((answer) => (
+                        <li
+                          key={answer.id}
+                          className={`flex items-center ${answer.isCorrect ? 'font-bold text-green-500' : ''}`}
+                        >
+                          <span>{answer.content}</span>
+                          <span className="ml-2">: {String(answer.isCorrect)}</span>
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                  <button
+                    className="regular-button mt-2"
+                    onClick={() => handleDeleteQuestion(question.id)}
+                  >
+                    REMOVE
+                  </button>
+                </li>
+              ))}
+            </ul>
             ) : (
               <p>No questions available yet.</p>
             )}

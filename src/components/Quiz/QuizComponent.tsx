@@ -84,8 +84,6 @@ const QuizComponent: React.FC = () => {
 
   return (
     <div>
-      <p className="text-gray-600 mb-4">{selectedQuiz.name}</p>
-      <p>{selectedQuiz.description}</p>
 
       {currentQuestion && (
       <div className="flex items-center justify-center h-screen">

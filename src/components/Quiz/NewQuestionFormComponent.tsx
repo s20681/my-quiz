@@ -49,10 +49,10 @@ const NewQuestionForm: React.FC = () => {
             type: "SINGLE_CHOICE",
             content: formState.question,
             answers: [
-                {id: null, content: formState.answerA, isCorrect: false},
-                {id: null, content: formState.answerB, isCorrect: false},
-                {id: null, content: formState.answerC, isCorrect: false},
-                {id: null, content: formState.answerD, isCorrect: false},
+                { id: null, content: formState.answerA, isCorrect: false },
+                { id: null, content: formState.answerB, isCorrect: false },
+                { id: null, content: formState.answerC, isCorrect: false },
+                { id: null, content: formState.answerD, isCorrect: false },
             ],
             correctAnswerIndex: formState.correctAnswer,
         };
@@ -77,36 +77,98 @@ const NewQuestionForm: React.FC = () => {
 
     return (
         <div>
-            <Navbar></Navbar>
-            <p>Adding question for quiz id: {quizId}</p>
-            <form id="myForm" onSubmit={handleSubmit}>
-                <div>
-                    <textarea id="question" name="question" value={formState.question} placeholder="Write the question here..."
-                        onChange={handleChange}></textarea>
-                </div>
+            <div className="flex flex-col items-center">
+                <Navbar />
 
-                <div><input type="text" value={formState.answerA} name="answerA" id="answerA" placeholder="Enter answer A" onChange={handleChange} /></div>
-                <div><input type="text" value={formState.answerB} name="answerB" placeholder="Enter answer B" onChange={handleChange} /></div>
-                <div><input type="text" value={formState.answerC} name="answerC" placeholder="Enter answer C" onChange={handleChange} /></div>
-                <div><input type="text" value={formState.answerD} name="answerD" placeholder="Enter answer D" onChange={handleChange} /></div>
-                <div>
-                    <select id="selectCorrectAnswer" name="correctAnswer" value={formState.correctAnswer} onChange={handleChange}>
-                        <option value="0">A</option>
-                        <option value="1">B</option>
-                        <option value="2">C</option>
-                        <option value="3">D</option>
-                    </select>
-                </div>
+                <div className="max-w-md bg-white rounded-lg p-8 shadow-lg mt-8 min-w-[50%]">
+                    <form id="myForm" onSubmit={handleSubmit}>
+                        <div className="mb-4">
+                            <textarea
+                                id="question"
+                                name="question"
+                                value={formState.question}
+                                placeholder="Write the question here..."
+                                onChange={handleChange}
+                                required
+                                className="border border-gray-300 px-4 py-2 rounded w-full"
+                            ></textarea>
+                        </div>
 
-                <div>
-                    <button className='accent-button' type="submit">Submit</button>
-                </div>
-            </form>
+                        <div className="mb-4">
+                            <input
+                                type="text"
+                                value={formState.answerA}
+                                name="answerA"
+                                id="answerA"
+                                placeholder="Enter answer A"
+                                onChange={handleChange}
+                                required
+                                className="border border-gray-300 px-4 py-2 rounded w-full"
+                            />
+                        </div>
 
-            <div>
-                <button className='regular-button' onClick={() => handleGoBack()}> Go back </button>
+                        <div className="mb-4">
+                            <input
+                                type="text"
+                                value={formState.answerB}
+                                name="answerB"
+                                placeholder="Enter answer B"
+                                onChange={handleChange}
+                                required
+                                className="border border-gray-300 px-4 py-2 rounded w-full"
+                            />
+                        </div>
+
+                        <div className="mb-4">
+                            <input
+                                type="text"
+                                value={formState.answerC}
+                                name="answerC"
+                                placeholder="Enter answer C"
+                                onChange={handleChange}
+                                required
+                                className="border border-gray-300 px-4 py-2 rounded w-full"
+                            />
+                        </div>
+
+                        <div className="mb-4">
+                            <input
+                                type="text"
+                                value={formState.answerD}
+                                name="answerD"
+                                placeholder="Enter answer D"
+                                onChange={handleChange}
+                                required
+                                className="border border-gray-300 px-4 py-2 rounded w-full"
+                            />
+                        </div>
+
+                        <div className="mb-4">
+                            <select
+                                id="selectCorrectAnswer"
+                                name="correctAnswer"
+                                value={formState.correctAnswer}
+                                onChange={handleChange}
+                                required
+                                className="border border-gray-300 px-4 py-2 rounded w-full"
+                            >
+                                <option value="0">A</option>
+                                <option value="1">B</option>
+                                <option value="2">C</option>
+                                <option value="3">D</option>
+                            </select>
+                        </div>
+
+                        <div className="mb-4">
+                            <button className="accent-button w-full" type="submit">Submit</button>
+                        </div>
+                    </form>
+
+                    <div className="mb-4">
+                        <button className="regular-button w-full" onClick={() => handleGoBack()}>Go back</button>
+                    </div>
+                </div>
             </div>
-
         </div>
     );
 }

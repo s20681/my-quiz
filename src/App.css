@@ -27,5 +27,5 @@ input[type="text"] {
 }
 
 p {
-  @apply mt-10 text-purple-600;
+  @apply mt-10 text-center text-purple-600;
 }
