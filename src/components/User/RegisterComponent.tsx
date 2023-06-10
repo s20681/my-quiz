@@ -4,6 +4,7 @@ import { useNavigate } from 'react-router-dom'
 import * as Yup from 'yup';
 import styled from 'styled-components';
 import pl from 'yup-locale-pl';
+import CentralLogoContainer from '../Layout/CentralLogoContainer';
 
 Yup.setLocale(pl);
 
@@ -84,27 +85,53 @@ const RegisterComponent: React.FC = () => {
         onSubmit={handleSubmit}
       >
         {({ errors, touched }) => (
-          <Form>
-            <div>
-              <InputLabel htmlFor="login">Login: </InputLabel>
-              <Field type="text" id="login" name="login" />
-            </div>
-            <div>
-              <InputLabel htmlFor="password">Hasło: </InputLabel>
-              <Field type="password" id="password" name="password" />
-            </div>
-            <div>
-              <InputLabel htmlFor="email">E-mail: </InputLabel>
-              <Field type="email" id="email" name="email" />
-            </div>
-            <button className='regular-button' type="submit" disabled={isSubmitting}>Register</button>
+          <div className="main-container">
+            <CentralLogoContainer></CentralLogoContainer>
+            <div className="form-container">
+              <Form className="space-y-6">
+                <div>
+                  <label htmlFor="login" className="block text-sm font-medium leading-6 text-gray-900">Login</label>
+                  <div className="mt-2">
+                  <Field type="text" id="login" name="login" className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"></Field>
+                  </div>
+                </div>
 
-            <button className='regular-button' onClick={handleGoBackClick}>go back</button>
+                <div>
+                  <div className="flex items-center justify-between">
+                    <label htmlFor="password" className="block text-sm font-medium leading-6 text-gray-900">Password</label>
 
-            <ErrorMessage name="login" component="div" />
-            <ErrorMessage name="password" component="div" />
-            <ErrorMessage name="email" component="div" />
-          </Form>
+                  </div>
+                  <div className="mt-2">
+                  <Field type="password" id="password" name="password" className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"></Field>
+                  </div>
+                </div>
+
+
+                <div>
+                  <div className="flex items-center justify-between">
+                    <label htmlFor="email" className="block text-sm font-medium leading-6 text-gray-900">Email</label>
+
+                  </div>
+                  <div className="mt-2">
+                  <Field type="email" id="email" name="email" className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"></Field>
+                  </div>
+                </div>
+
+                <div>
+                  <button type="submit" disabled={isSubmitting} className="flex w-full justify-center rounded-md bg-indigo-600 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">Register</button>
+                </div>
+
+                <ErrorMessage name="login" component="div" />
+                <ErrorMessage name="password" component="div" />
+                <ErrorMessage name="email" component="div" />
+              </Form>
+
+              <p className="mt-10 text-center text-sm text-gray-500">
+                Aleady registered? {" "}
+                <button onClick={handleGoBackClick} className="font-semibold leading-6 text-indigo-600 hover:text-indigo-500"> go back </button>
+              </p>
+            </div>
+          </div>
         )}
       </Formik>
 
