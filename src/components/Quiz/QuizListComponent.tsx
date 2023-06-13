@@ -107,7 +107,7 @@ const QuizListComponent: React.FC = () => {
         } else if (sortOption === 'category') {
           return a.category.localeCompare(b.category) * compareValue(sortOrder);
         } else if (sortOption === 'difficulty') {
-          return (convertDifficultyToValue(b.difficulty) - (convertDifficultyToValue(a.difficulty))) * compareValue(sortOrder);
+          return ((convertDifficultyToValue(a.difficulty)) - convertDifficultyToValue(b.difficulty)) * compareValue(sortOrder);
         } else {
           return 0;
         }
