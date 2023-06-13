@@ -40,6 +40,8 @@ const ManageAccountComponent: React.FC = () => {
   const navigate = useNavigate();
   const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
   const [responseMessage, setResponseMessage] = useState('');
+  const [passwordChangeResponseMessage, setpasswordChangeResponseMessage] = useState('');
+  const [accountRemovalResponseMessage, setaccountRemovalResponseMessage] = useState('');
   const authContext = useContext(AuthContext);
   const [userData, setUserData] = useState<UserData>();
   const [allUserData, setAllUserData] = useState<UserData[]>();
@@ -121,18 +123,18 @@ const ManageAccountComponent: React.FC = () => {
       .then((response) => response.json())
       .then((data) => {
         if (data.success === "true") {
-          setResponseMessage('Password change successful! You will be redirected to login screen.');
+          setaccountRemovalResponseMessage('Account removed successful! You will be redirected to login screen.');
           setTimeout(() => {
             authContext.logout();
             navigate('/login');
           }, 5000);
         } else {
-          setResponseMessage(data.message);
+          setaccountRemovalResponseMessage(data.message);
         }
       })
       .catch((error) => {
         console.error('Error:', error);
-        setResponseMessage('An error occurred during the process.');
+        setaccountRemovalResponseMessage('An error occurred during the process.');
       });
   };
 
@@ -182,19 +184,19 @@ const ManageAccountComponent: React.FC = () => {
       .then((response) => response.json())
       .then((data) => {
         if (data.success === "true") {
-          setResponseMessage('Account removed successful! You will be redirected to login screen.');
+          setpasswordChangeResponseMessage('Password change successful! You will be redirected to login screen.');
           setTimeout(() => {
             authContext.logout();
             navigate('/login');
           }, 5000);
         } else {
-          setResponseMessage('Could not change the password. Please double check original password.');
+          setpasswordChangeResponseMessage('Could not change the password. Please double check original password.');
         }
         setIsSubmitting(false);
       })
       .catch((error) => {
         console.error('Error:', error);
-        setResponseMessage('An error occurred during the process.');
+        setpasswordChangeResponseMessage('An error occurred during the process.');
       });
   };
 
@@ -251,6 +253,7 @@ const ManageAccountComponent: React.FC = () => {
                   </Form>
                 )}
               </Formik>
+              {passwordChangeResponseMessage && <p>{passwordChangeResponseMessage}</p>}
 
               <Formik
                 initialValues={removeAccountFormData}
@@ -289,6 +292,7 @@ const ManageAccountComponent: React.FC = () => {
                   </button>
                 </Form>
               </Formik>
+              {accountRemovalResponseMessage && <p>{accountRemovalResponseMessage}</p>}
             </div>
           </div>
 
@@ -355,21 +359,6 @@ const ManageAccountComponent: React.FC = () => {
                   ))}
                 </tbody>
               </table>
-
-              {/* <div>
-                <h3>All existing accounts details:</h3>
-                {allUserData?.map((userDetails, index) => (
-                  <li key={index}>
-                    <div>ID: {userDetails.id}</div>
-                    <div>User: {userDetails.login}</div>
-                    <div>Email: {userDetails.email}</div>
-                    <div>Verificationcode: {userDetails.verificationCode}</div>
-                    <div>Status: {userDetails.isActivated ? "Active" : "Inactive"}</div>
-
-                    {userDetails.login !== "admin" ? (<button className='regular-button' onClick={() => handleRemoveAccountByAdmin(userDetails.id)}>Remove</button>) : (null)}
-                  </li>
-                ))}
-              </div> */}
             </div>
           )}
 
